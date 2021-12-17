@@ -3,7 +3,6 @@
 # source: document.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -14,17 +13,292 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x64ocument.proto\x12\x03\x64oc\"\'\n\x16\x44ocumentContentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"8\n\x17\x44ocumentContentResponse\x12\x0f\n\x07version\x18\x01 \x01(\x05\x12\x0c\n\x04text\x18\x02 \x01(\t\"\xd6\x01\n\x0f\x44ocumentChanges\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12,\n\x07\x64\x65letes\x18\x03 \x03(\x0b\x32\x1b.doc.DocumentChanges.Delete\x12,\n\x07inserts\x18\x04 \x03(\x0b\x32\x1b.doc.DocumentChanges.Insert\x1a\"\n\x06\x44\x65lete\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0b\n\x03len\x18\x02 \x01(\x05\x1a#\n\x06Insert\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0c\n\x04text\x18\x02 \x01(\t\"8\n\x16\x44ocumentChangesRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\"\x19\n\x17\x44ocumentChangesResponse2\x82\x02\n\x0f\x44ocumentService\x12W\n\x18GetActualDocumentContent\x12\x1b.doc.DocumentContentRequest\x1a\x1c.doc.DocumentContentResponse\"\x00\x12I\n\x12GetDocumentChanges\x12\x1b.doc.DocumentChangesRequest\x1a\x14.doc.DocumentChanges\"\x00\x12K\n\x13SendDocumentChanges\x12\x14.doc.DocumentChanges\x1a\x1c.doc.DocumentChangesResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor.FileDescriptor(
+  name='document.proto',
+  package='doc',
+  syntax='proto3',
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n\x0e\x64ocument.proto\x12\x03\x64oc\"\'\n\x16\x44ocumentContentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"8\n\x17\x44ocumentContentResponse\x12\x0f\n\x07version\x18\x01 \x01(\x05\x12\x0c\n\x04text\x18\x02 \x01(\t\"\xd6\x01\n\x0f\x44ocumentChanges\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12,\n\x07\x64\x65letes\x18\x03 \x03(\x0b\x32\x1b.doc.DocumentChanges.Delete\x12,\n\x07inserts\x18\x04 \x03(\x0b\x32\x1b.doc.DocumentChanges.Insert\x1a\"\n\x06\x44\x65lete\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0b\n\x03len\x18\x02 \x01(\x05\x1a#\n\x06Insert\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0c\n\x04text\x18\x02 \x01(\t\"8\n\x16\x44ocumentChangesRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\"\x19\n\x17\x44ocumentChangesResponse2\x82\x02\n\x0f\x44ocumentService\x12W\n\x18GetActualDocumentContent\x12\x1b.doc.DocumentContentRequest\x1a\x1c.doc.DocumentContentResponse\"\x00\x12I\n\x12GetDocumentChanges\x12\x1b.doc.DocumentChangesRequest\x1a\x14.doc.DocumentChanges\"\x00\x12K\n\x13SendDocumentChanges\x12\x14.doc.DocumentChanges\x1a\x1c.doc.DocumentChangesResponse\"\x00\x62\x06proto3'
+)
 
 
 
-_DOCUMENTCONTENTREQUEST = DESCRIPTOR.message_types_by_name['DocumentContentRequest']
-_DOCUMENTCONTENTRESPONSE = DESCRIPTOR.message_types_by_name['DocumentContentResponse']
-_DOCUMENTCHANGES = DESCRIPTOR.message_types_by_name['DocumentChanges']
-_DOCUMENTCHANGES_DELETE = _DOCUMENTCHANGES.nested_types_by_name['Delete']
-_DOCUMENTCHANGES_INSERT = _DOCUMENTCHANGES.nested_types_by_name['Insert']
-_DOCUMENTCHANGESREQUEST = DESCRIPTOR.message_types_by_name['DocumentChangesRequest']
-_DOCUMENTCHANGESRESPONSE = DESCRIPTOR.message_types_by_name['DocumentChangesResponse']
+
+_DOCUMENTCONTENTREQUEST = _descriptor.Descriptor(
+  name='DocumentContentRequest',
+  full_name='doc.DocumentContentRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='docId', full_name='doc.DocumentContentRequest.docId', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=23,
+  serialized_end=62,
+)
+
+
+_DOCUMENTCONTENTRESPONSE = _descriptor.Descriptor(
+  name='DocumentContentResponse',
+  full_name='doc.DocumentContentResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='version', full_name='doc.DocumentContentResponse.version', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='text', full_name='doc.DocumentContentResponse.text', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=64,
+  serialized_end=120,
+)
+
+
+_DOCUMENTCHANGES_DELETE = _descriptor.Descriptor(
+  name='Delete',
+  full_name='doc.DocumentChanges.Delete',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='pos', full_name='doc.DocumentChanges.Delete.pos', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='len', full_name='doc.DocumentChanges.Delete.len', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=266,
+  serialized_end=300,
+)
+
+_DOCUMENTCHANGES_INSERT = _descriptor.Descriptor(
+  name='Insert',
+  full_name='doc.DocumentChanges.Insert',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='pos', full_name='doc.DocumentChanges.Insert.pos', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='text', full_name='doc.DocumentChanges.Insert.text', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=302,
+  serialized_end=337,
+)
+
+_DOCUMENTCHANGES = _descriptor.Descriptor(
+  name='DocumentChanges',
+  full_name='doc.DocumentChanges',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='docId', full_name='doc.DocumentChanges.docId', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='version', full_name='doc.DocumentChanges.version', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='deletes', full_name='doc.DocumentChanges.deletes', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='inserts', full_name='doc.DocumentChanges.inserts', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_DOCUMENTCHANGES_DELETE, _DOCUMENTCHANGES_INSERT, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=123,
+  serialized_end=337,
+)
+
+
+_DOCUMENTCHANGESREQUEST = _descriptor.Descriptor(
+  name='DocumentChangesRequest',
+  full_name='doc.DocumentChangesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='docId', full_name='doc.DocumentChangesRequest.docId', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='version', full_name='doc.DocumentChangesRequest.version', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=339,
+  serialized_end=395,
+)
+
+
+_DOCUMENTCHANGESRESPONSE = _descriptor.Descriptor(
+  name='DocumentChangesResponse',
+  full_name='doc.DocumentChangesResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=397,
+  serialized_end=422,
+)
+
+_DOCUMENTCHANGES_DELETE.containing_type = _DOCUMENTCHANGES
+_DOCUMENTCHANGES_INSERT.containing_type = _DOCUMENTCHANGES
+_DOCUMENTCHANGES.fields_by_name['deletes'].message_type = _DOCUMENTCHANGES_DELETE
+_DOCUMENTCHANGES.fields_by_name['inserts'].message_type = _DOCUMENTCHANGES_INSERT
+DESCRIPTOR.message_types_by_name['DocumentContentRequest'] = _DOCUMENTCONTENTREQUEST
+DESCRIPTOR.message_types_by_name['DocumentContentResponse'] = _DOCUMENTCONTENTRESPONSE
+DESCRIPTOR.message_types_by_name['DocumentChanges'] = _DOCUMENTCHANGES
+DESCRIPTOR.message_types_by_name['DocumentChangesRequest'] = _DOCUMENTCHANGESREQUEST
+DESCRIPTOR.message_types_by_name['DocumentChangesResponse'] = _DOCUMENTCHANGESRESPONSE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
 DocumentContentRequest = _reflection.GeneratedProtocolMessageType('DocumentContentRequest', (_message.Message,), {
   'DESCRIPTOR' : _DOCUMENTCONTENTREQUEST,
   '__module__' : 'document_pb2'
@@ -76,24 +350,51 @@ DocumentChangesResponse = _reflection.GeneratedProtocolMessageType('DocumentChan
   })
 _sym_db.RegisterMessage(DocumentChangesResponse)
 
-_DOCUMENTSERVICE = DESCRIPTOR.services_by_name['DocumentService']
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-  DESCRIPTOR._options = None
-  _DOCUMENTCONTENTREQUEST._serialized_start=23
-  _DOCUMENTCONTENTREQUEST._serialized_end=62
-  _DOCUMENTCONTENTRESPONSE._serialized_start=64
-  _DOCUMENTCONTENTRESPONSE._serialized_end=120
-  _DOCUMENTCHANGES._serialized_start=123
-  _DOCUMENTCHANGES._serialized_end=337
-  _DOCUMENTCHANGES_DELETE._serialized_start=266
-  _DOCUMENTCHANGES_DELETE._serialized_end=300
-  _DOCUMENTCHANGES_INSERT._serialized_start=302
-  _DOCUMENTCHANGES_INSERT._serialized_end=337
-  _DOCUMENTCHANGESREQUEST._serialized_start=339
-  _DOCUMENTCHANGESREQUEST._serialized_end=395
-  _DOCUMENTCHANGESRESPONSE._serialized_start=397
-  _DOCUMENTCHANGESRESPONSE._serialized_end=422
-  _DOCUMENTSERVICE._serialized_start=425
-  _DOCUMENTSERVICE._serialized_end=683
+
+_DOCUMENTSERVICE = _descriptor.ServiceDescriptor(
+  name='DocumentService',
+  full_name='doc.DocumentService',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=425,
+  serialized_end=683,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='GetActualDocumentContent',
+    full_name='doc.DocumentService.GetActualDocumentContent',
+    index=0,
+    containing_service=None,
+    input_type=_DOCUMENTCONTENTREQUEST,
+    output_type=_DOCUMENTCONTENTRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetDocumentChanges',
+    full_name='doc.DocumentService.GetDocumentChanges',
+    index=1,
+    containing_service=None,
+    input_type=_DOCUMENTCHANGESREQUEST,
+    output_type=_DOCUMENTCHANGES,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendDocumentChanges',
+    full_name='doc.DocumentService.SendDocumentChanges',
+    index=2,
+    containing_service=None,
+    input_type=_DOCUMENTCHANGES,
+    output_type=_DOCUMENTCHANGESRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_DOCUMENTSERVICE)
+
+DESCRIPTOR.services_by_name['DocumentService'] = _DOCUMENTSERVICE
+
 # @@protoc_insertion_point(module_scope)

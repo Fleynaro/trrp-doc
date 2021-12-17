@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package doc;
+
+// получение контента документа актуальной версии
+message DocumentContentRequest {
+    int64 docId = 1;
+}
+
+message DocumentContentResponse {
+    int32 version = 1;
+    string text = 2;
+}
+
+// изменения в документе
+message DocumentChanges {
+    // где и сколько удалено
+    message Delete {
+        int64 pos = 1;
+        int32 len = 2;
+    }
+
+    // где и что вставлено
+    message Insert {
+        int64 pos = 1;
+        string text = 2;
+    }
+    
+    int64 docId = 1;
+    int32 version = 2;
+    repeated Delete deletes = 3;
+    repeated Insert inserts = 4;
+}
+
+message DocumentChangesRequest {
+    int64 docId = 1;
+    int32 version = 2;
+}
+
+message DocumentChangesResponse {}
+
+// сервис по работе с одним документом
+service DocumentService {
+    // получение контента документа актуальной версии
+    rpc GetActualDocumentContent(DocumentContentRequest) returns (DocumentContentResponse) {}
+
+    // получить изменения
+    rpc GetDocumentChanges(DocumentChangesRequest) returns (DocumentChanges) {}
+
+    // отправить изменения
+    rpc SendDocumentChanges(DocumentChanges) returns (DocumentChangesResponse) {}
+}

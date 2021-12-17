@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package doc;
+
+// получение списка документов
+message DocumentsRequest {}
+
+message DocumentInfoResponse {
+    int64 docId = 1;
+    string title = 2;
+}
+
+// получение сервера по ид документа
+message DocServerRequest {
+    int64 docId = 1;
+}
+
+message DocServerResponse {
+    string host = 1;
+    int32 port = 2;
+}
+
+// сервис по работе со множеством документов
+service DispatcherService {
+    // получение списка документов
+    rpc GetDocuments(DocumentsRequest) returns (stream DocumentInfoResponse) {}
+    
+    // получение сервера по ид документа
+    rpc GetDocServer(DocServerRequest) returns (DocServerResponse) {}
+}

@@ -6,7 +6,7 @@ import dispatcher_pb2 as dispatcher__pb2
 
 
 class DispatcherServiceStub(object):
-    """сервис по работе со множеством документов
+    """сервис по работе со множеством серверов
     """
 
     def __init__(self, channel):
@@ -15,11 +15,6 @@ class DispatcherServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetDocuments = channel.unary_stream(
-                '/doc.DispatcherService/GetDocuments',
-                request_serializer=dispatcher__pb2.DocumentsRequest.SerializeToString,
-                response_deserializer=dispatcher__pb2.DocumentInfoResponse.FromString,
-                )
         self.GetDocServer = channel.unary_unary(
                 '/doc.DispatcherService/GetDocServer',
                 request_serializer=dispatcher__pb2.DocServerRequest.SerializeToString,
@@ -33,15 +28,8 @@ class DispatcherServiceStub(object):
 
 
 class DispatcherServiceServicer(object):
-    """сервис по работе со множеством документов
+    """сервис по работе со множеством серверов
     """
-
-    def GetDocuments(self, request, context):
-        """получение списка документов
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def GetDocServer(self, request, context):
         """получение сервера по ид документа
@@ -60,11 +48,6 @@ class DispatcherServiceServicer(object):
 
 def add_DispatcherServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetDocuments': grpc.unary_stream_rpc_method_handler(
-                    servicer.GetDocuments,
-                    request_deserializer=dispatcher__pb2.DocumentsRequest.FromString,
-                    response_serializer=dispatcher__pb2.DocumentInfoResponse.SerializeToString,
-            ),
             'GetDocServer': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDocServer,
                     request_deserializer=dispatcher__pb2.DocServerRequest.FromString,
@@ -83,25 +66,8 @@ def add_DispatcherServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class DispatcherService(object):
-    """сервис по работе со множеством документов
+    """сервис по работе со множеством серверов
     """
-
-    @staticmethod
-    def GetDocuments(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/doc.DispatcherService/GetDocuments',
-            dispatcher__pb2.DocumentsRequest.SerializeToString,
-            dispatcher__pb2.DocumentInfoResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetDocServer(request,

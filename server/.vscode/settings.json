@@ -3,6 +3,7 @@
         "./grpc",
         "./services/dispatcher",
         "./services/document",
+        "./services/storage",
         "./shared"
     ]
 }

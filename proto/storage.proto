@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package doc;
+
+import "document_content.proto";
+
+// получение списка документов
+message DocumentsRequest {}
+
+message DocumentInfoResponse {
+    int64 docId = 1;
+    string title = 2;
+}
+
+// сервис по работе с хранилищем документов
+service StorageService {
+    // получение списка документов
+    rpc GetDocuments(DocumentsRequest) returns (stream DocumentInfoResponse) {}
+
+    // получение содержимого документа
+    rpc GetDocumentContent(DocumentContentRequest) returns (DocumentContentResponse) {}
+}

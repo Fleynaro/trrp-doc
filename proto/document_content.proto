@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package doc;
+
+// получение содержимого документа
+message DocumentContentRequest {
+    int64 docId = 1;
+}
+
+message DocumentContentResponse {
+    int32 version = 1;
+    string text = 2;
+}

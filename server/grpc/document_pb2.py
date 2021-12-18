@@ -11,6 +11,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+import document_content_pb2 as document__content__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -19,8 +20,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x64ocument.proto\x12\x03\x64oc\"\r\n\x0bPingRequest\"\x0e\n\x0cPingResponse\"\'\n\x16\x44ocumentContentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"8\n\x17\x44ocumentContentResponse\x12\x0f\n\x07version\x18\x01 \x01(\x05\x12\x0c\n\x04text\x18\x02 \x01(\t\"\xd6\x01\n\x0f\x44ocumentChanges\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12,\n\x07\x64\x65letes\x18\x03 \x03(\x0b\x32\x1b.doc.DocumentChanges.Delete\x12,\n\x07inserts\x18\x04 \x03(\x0b\x32\x1b.doc.DocumentChanges.Insert\x1a\"\n\x06\x44\x65lete\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0b\n\x03len\x18\x02 \x01(\x05\x1a#\n\x06Insert\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0c\n\x04text\x18\x02 \x01(\t\"8\n\x16\x44ocumentChangesRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\"\x19\n\x17\x44ocumentChangesResponse2\xb1\x02\n\x0f\x44ocumentService\x12-\n\x04Ping\x12\x10.doc.PingRequest\x1a\x11.doc.PingResponse\"\x00\x12W\n\x18GetActualDocumentContent\x12\x1b.doc.DocumentContentRequest\x1a\x1c.doc.DocumentContentResponse\"\x00\x12I\n\x12GetDocumentChanges\x12\x1b.doc.DocumentChangesRequest\x1a\x14.doc.DocumentChanges\"\x00\x12K\n\x13SendDocumentChanges\x12\x14.doc.DocumentChanges\x1a\x1c.doc.DocumentChangesResponse\"\x00\x62\x06proto3'
-)
+  serialized_pb=b'\n\x0e\x64ocument.proto\x12\x03\x64oc\x1a\x16\x64ocument_content.proto\"/\n\x0bPingRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x11\n\tsecretKey\x18\x02 \x01(\t\"\x0e\n\x0cPingResponse\"\xd6\x01\n\x0f\x44ocumentChanges\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12,\n\x07\x64\x65letes\x18\x03 \x03(\x0b\x32\x1b.doc.DocumentChanges.Delete\x12,\n\x07inserts\x18\x04 \x03(\x0b\x32\x1b.doc.DocumentChanges.Insert\x1a\"\n\x06\x44\x65lete\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0b\n\x03len\x18\x02 \x01(\x05\x1a#\n\x06Insert\x12\x0b\n\x03pos\x18\x01 \x01(\x03\x12\x0c\n\x04text\x18\x02 \x01(\t\"8\n\x16\x44ocumentChangesRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\"\x19\n\x17\x44ocumentChangesResponse2\xb1\x02\n\x0f\x44ocumentService\x12-\n\x04Ping\x12\x10.doc.PingRequest\x1a\x11.doc.PingResponse\"\x00\x12W\n\x18GetActualDocumentContent\x12\x1b.doc.DocumentContentRequest\x1a\x1c.doc.DocumentContentResponse\"\x00\x12I\n\x12GetDocumentChanges\x12\x1b.doc.DocumentChangesRequest\x1a\x14.doc.DocumentChanges\"\x00\x12K\n\x13SendDocumentChanges\x12\x14.doc.DocumentChanges\x1a\x1c.doc.DocumentChangesResponse\"\x00\x62\x06proto3'
+  ,
+  dependencies=[document__content__pb2.DESCRIPTOR,])
 
 
 
@@ -33,6 +35,20 @@ _PINGREQUEST = _descriptor.Descriptor(
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='docId', full_name='doc.PingRequest.docId', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='secretKey', full_name='doc.PingRequest.secretKey', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -45,8 +61,8 @@ _PINGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=23,
-  serialized_end=36,
+  serialized_start=47,
+  serialized_end=94,
 )
 
 
@@ -70,79 +86,8 @@ _PINGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=38,
-  serialized_end=52,
-)
-
-
-_DOCUMENTCONTENTREQUEST = _descriptor.Descriptor(
-  name='DocumentContentRequest',
-  full_name='doc.DocumentContentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='docId', full_name='doc.DocumentContentRequest.docId', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=54,
-  serialized_end=93,
-)
-
-
-_DOCUMENTCONTENTRESPONSE = _descriptor.Descriptor(
-  name='DocumentContentResponse',
-  full_name='doc.DocumentContentResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='version', full_name='doc.DocumentContentResponse.version', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='text', full_name='doc.DocumentContentResponse.text', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=95,
-  serialized_end=151,
+  serialized_start=96,
+  serialized_end=110,
 )
 
 
@@ -180,8 +125,8 @@ _DOCUMENTCHANGES_DELETE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=297,
-  serialized_end=331,
+  serialized_start=256,
+  serialized_end=290,
 )
 
 _DOCUMENTCHANGES_INSERT = _descriptor.Descriptor(
@@ -218,8 +163,8 @@ _DOCUMENTCHANGES_INSERT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=333,
-  serialized_end=368,
+  serialized_start=292,
+  serialized_end=327,
 )
 
 _DOCUMENTCHANGES = _descriptor.Descriptor(
@@ -270,8 +215,8 @@ _DOCUMENTCHANGES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=368,
+  serialized_start=113,
+  serialized_end=327,
 )
 
 
@@ -309,8 +254,8 @@ _DOCUMENTCHANGESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=370,
-  serialized_end=426,
+  serialized_start=329,
+  serialized_end=385,
 )
 
 
@@ -334,8 +279,8 @@ _DOCUMENTCHANGESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=428,
-  serialized_end=453,
+  serialized_start=387,
+  serialized_end=412,
 )
 
 _DOCUMENTCHANGES_DELETE.containing_type = _DOCUMENTCHANGES
@@ -344,8 +289,6 @@ _DOCUMENTCHANGES.fields_by_name['deletes'].message_type = _DOCUMENTCHANGES_DELET
 _DOCUMENTCHANGES.fields_by_name['inserts'].message_type = _DOCUMENTCHANGES_INSERT
 DESCRIPTOR.message_types_by_name['PingRequest'] = _PINGREQUEST
 DESCRIPTOR.message_types_by_name['PingResponse'] = _PINGRESPONSE
-DESCRIPTOR.message_types_by_name['DocumentContentRequest'] = _DOCUMENTCONTENTREQUEST
-DESCRIPTOR.message_types_by_name['DocumentContentResponse'] = _DOCUMENTCONTENTRESPONSE
 DESCRIPTOR.message_types_by_name['DocumentChanges'] = _DOCUMENTCHANGES
 DESCRIPTOR.message_types_by_name['DocumentChangesRequest'] = _DOCUMENTCHANGESREQUEST
 DESCRIPTOR.message_types_by_name['DocumentChangesResponse'] = _DOCUMENTCHANGESRESPONSE
@@ -364,20 +307,6 @@ PingResponse = _reflection.GeneratedProtocolMessageType('PingResponse', (_messag
   # @@protoc_insertion_point(class_scope:doc.PingResponse)
   })
 _sym_db.RegisterMessage(PingResponse)
-
-DocumentContentRequest = _reflection.GeneratedProtocolMessageType('DocumentContentRequest', (_message.Message,), {
-  'DESCRIPTOR' : _DOCUMENTCONTENTREQUEST,
-  '__module__' : 'document_pb2'
-  # @@protoc_insertion_point(class_scope:doc.DocumentContentRequest)
-  })
-_sym_db.RegisterMessage(DocumentContentRequest)
-
-DocumentContentResponse = _reflection.GeneratedProtocolMessageType('DocumentContentResponse', (_message.Message,), {
-  'DESCRIPTOR' : _DOCUMENTCONTENTRESPONSE,
-  '__module__' : 'document_pb2'
-  # @@protoc_insertion_point(class_scope:doc.DocumentContentResponse)
-  })
-_sym_db.RegisterMessage(DocumentContentResponse)
 
 DocumentChanges = _reflection.GeneratedProtocolMessageType('DocumentChanges', (_message.Message,), {
 
@@ -425,8 +354,8 @@ _DOCUMENTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=456,
-  serialized_end=761,
+  serialized_start=415,
+  serialized_end=720,
   methods=[
   _descriptor.MethodDescriptor(
     name='Ping',
@@ -443,8 +372,8 @@ _DOCUMENTSERVICE = _descriptor.ServiceDescriptor(
     full_name='doc.DocumentService.GetActualDocumentContent',
     index=1,
     containing_service=None,
-    input_type=_DOCUMENTCONTENTREQUEST,
-    output_type=_DOCUMENTCONTENTRESPONSE,
+    input_type=document__content__pb2._DOCUMENTCONTENTREQUEST,
+    output_type=document__content__pb2._DOCUMENTCONTENTRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

@@ -5,11 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Server",
+            "name": "Dispatcher service",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceRoot}/start_server.py",
-            "console": "integratedTerminal"
+            "program": "${workspaceRoot}/start_dispacther.py",
+            "console": "integratedTerminal",
+
+            "env": {
+                "GRPC_VERBOSITY": "debug"
+            },
+        },
+
+        {
+            "name": "Document service",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}/start_dispacther.py",
+            "console": "integratedTerminal",
+
+            "env": {
+                "GRPC_VERBOSITY": "debug"
+            },
         },
 
         {
@@ -17,14 +33,18 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceRoot}/start_client.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+
+            "env": {
+                "GRPC_VERBOSITY": "debug"
+            },
         }
     ],
 
     "compounds": [
         {
-            "name": "Server/Client",
-            "configurations": ["Server", "Client"]
+            "name": "Start all",
+            "configurations": ["Dispatcher service", "Document service", "Client"]
         }
     ]
 }

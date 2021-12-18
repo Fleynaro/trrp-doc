@@ -2,6 +2,10 @@ syntax = "proto3";
 
 package doc;
 
+// проверка доступности сервера
+message PingRequest {}
+message PingResponse {}
+
 // получение контента документа актуальной версии
 message DocumentContentRequest {
     int64 docId = 1;
@@ -41,6 +45,9 @@ message DocumentChangesResponse {}
 
 // сервис по работе с одним документом
 service DocumentService {
+    // проверка доступности сервера
+    rpc Ping(PingRequest) returns (PingResponse) {}
+
     // получение контента документа актуальной версии
     rpc GetActualDocumentContent(DocumentContentRequest) returns (DocumentContentResponse) {}
 

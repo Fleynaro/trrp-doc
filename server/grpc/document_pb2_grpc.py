@@ -15,6 +15,11 @@ class DocumentServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.Ping = channel.unary_unary(
+                '/doc.DocumentService/Ping',
+                request_serializer=document__pb2.PingRequest.SerializeToString,
+                response_deserializer=document__pb2.PingResponse.FromString,
+                )
         self.GetActualDocumentContent = channel.unary_unary(
                 '/doc.DocumentService/GetActualDocumentContent',
                 request_serializer=document__pb2.DocumentContentRequest.SerializeToString,
@@ -35,6 +40,13 @@ class DocumentServiceStub(object):
 class DocumentServiceServicer(object):
     """сервис по работе с одним документом
     """
+
+    def Ping(self, request, context):
+        """проверка доступности сервера
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def GetActualDocumentContent(self, request, context):
         """получение контента документа актуальной версии
@@ -60,6 +72,11 @@ class DocumentServiceServicer(object):
 
 def add_DocumentServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'Ping': grpc.unary_unary_rpc_method_handler(
+                    servicer.Ping,
+                    request_deserializer=document__pb2.PingRequest.FromString,
+                    response_serializer=document__pb2.PingResponse.SerializeToString,
+            ),
             'GetActualDocumentContent': grpc.unary_unary_rpc_method_handler(
                     servicer.GetActualDocumentContent,
                     request_deserializer=document__pb2.DocumentContentRequest.FromString,
@@ -85,6 +102,23 @@ def add_DocumentServiceServicer_to_server(servicer, server):
 class DocumentService(object):
     """сервис по работе с одним документом
     """
+
+    @staticmethod
+    def Ping(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/doc.DocumentService/Ping',
+            document__pb2.PingRequest.SerializeToString,
+            document__pb2.PingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetActualDocumentContent(request,

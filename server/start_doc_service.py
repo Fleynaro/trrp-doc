@@ -1,6 +1,7 @@
 import sys
 sys.path.append("./grpc")
-sys.path.append("./src")
+sys.path.append("./shared")
+sys.path.append("./services/document")
 
 from main import serve
 

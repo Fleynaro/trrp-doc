@@ -15,9 +15,19 @@ message DocServerRequest {
     int64 docId = 1;
 }
 
-message DocServerResponse {
+message DocServer {
     string host = 1;
     int32 port = 2;
+}
+
+// добавление нового сервера документов
+message AddDocServerRequest {
+    DocServer docServer = 1;
+    string secretKey = 2;
+}
+
+message AddDocServerResponse {
+    bool success = 1;
 }
 
 // сервис по работе со множеством документов
@@ -26,5 +36,8 @@ service DispatcherService {
     rpc GetDocuments(DocumentsRequest) returns (stream DocumentInfoResponse) {}
     
     // получение сервера по ид документа
-    rpc GetDocServer(DocServerRequest) returns (DocServerResponse) {}
+    rpc GetDocServer(DocServerRequest) returns (DocServer) {}
+
+    // добавление нового сервера документов
+    rpc AddDocServer(AddDocServerRequest) returns (AddDocServerResponse) {}
 }

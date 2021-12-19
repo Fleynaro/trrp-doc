@@ -1,0 +1,28 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" MinWidth="400" MinHeight="200">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <!--Список докуменов полученных с сервера-->
+        <ListBox x:Name="documentsList" SelectionMode="Single" Grid.Row="0" Grid.Column="0"/>
+        <!--Обработка текса-->
+        <RichTextBox x:Name="docBox" Grid.Column="1" />
+        <!--Панель с кнопками-->
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
+            <Button Content="Загрузить" Click="LoadDocumentFromServer" Margin="5 0 5 0" Padding="4 2 4 2"/>
+        </StackPanel>
+    </Grid>
+</Window>

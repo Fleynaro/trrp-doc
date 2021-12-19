@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="Grpc" Version="2.42.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.42.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="C:\Dev-Projects\C#\trrp-doc\proto\document.proto" Link="document.proto" GrpcServices="Client" />
+    <Protobuf Include="C:\Dev-Projects\C#\trrp-doc\proto\dispatcher.proto" Link="dispatcher.proto" GrpcServices="Client" />
+    <Protobuf Include="C:\Dev-Projects\C#\trrp-doc\proto\document_content.proto" Link="document_content.proto" GrpcServices="Client" />
+    <Protobuf Include="C:\Dev-Projects\C#\trrp-doc\proto\storage.proto" Link="storage.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+</Project>

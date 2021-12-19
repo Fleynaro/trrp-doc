@@ -39,8 +39,8 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         doc_sync = self.get_doc_sync(request.docId, context)
         if not doc_sync:
             return DocumentContentResponse()
-
-        return DocumentContentResponse(text=doc_sync.get_actual_content())
+        text, version = doc_sync.get_actual_content()
+        return DocumentContentResponse(text=text, version=version)
 
     def GetDocumentChanges(self, request, context):
         """получить изменения

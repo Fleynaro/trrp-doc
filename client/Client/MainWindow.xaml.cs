@@ -54,7 +54,7 @@ namespace Client
         {
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1000);
-            timer.Tick += SyncDoc;
+            //timer.Tick += SyncDoc;
         }
 
         private void LoadDocumentFromServer(object sender, RoutedEventArgs e)
@@ -75,7 +75,7 @@ namespace Client
                     Version = actualDoc.Version
                 };
                 ChangeTextInRichTextBox(actualDoc.Text);
-                timer.Start();
+                //timer.Start();
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace Client
             }
         }
 
-        private void SyncDoc(object sender, EventArgs e)
+        private void SyncDoc(object sender, RoutedEventArgs e)
         {
             try
             {

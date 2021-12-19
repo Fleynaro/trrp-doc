@@ -18,7 +18,6 @@ class DocumentChanges:
 
     def join(self, other):
         self.changes += other.changes
-        self.version = other.version
 
 
 class DocumentSync:
@@ -43,7 +42,7 @@ class DocumentSync:
                 elif change.type == TextChange.DELETE:
                     self.actual_text = self.actual_text[:change.pos] + self.actual_text[change.pos+len(change.text):]
                     
-        return self.actual_text
+        return self.actual_text, last_version
 
     def get_first_version(self):
         return min(self.changes_history.keys())
@@ -58,7 +57,7 @@ class DocumentSync:
         last_version = self.get_last_version()
         last_changes = DocumentChanges([], last_version)
         for ver, change in sorted(self.changes_history.items()):
-            if ver >= from_version and ver <= last_version:
+            if ver > from_version and ver <= last_version:
                 last_changes.join(change)
 
         return last_changes

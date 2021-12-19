@@ -55,9 +55,10 @@ class DocumentSync:
         return version in self.changes_history
 
     def get_last_changes(self, from_version) -> DocumentChanges:
-        last_changes = DocumentChanges([], 0)
+        last_version = self.get_last_version()
+        last_changes = DocumentChanges([], last_version)
         for ver, change in sorted(self.changes_history.items()):
-            if ver >= from_version:
+            if ver >= from_version and ver <= last_version:
                 last_changes.join(change)
 
         return last_changes

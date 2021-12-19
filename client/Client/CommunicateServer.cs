@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Doc;
@@ -19,7 +20,9 @@ namespace Client
 
         public CommunicateServer()
         {
+            var ips = Dns.GetHostAddresses("trrp1.mooo.com");
             var ip = "localhost";
+            ip = ips[0].ToString();
             try
             {
                 storageChannel = new Channel(ip, 50052, ChannelCredentials.Insecure);

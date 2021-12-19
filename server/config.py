@@ -5,9 +5,9 @@ CFG = {
     },
 
     # адреса серверов
-    'dispatcher_address': 'localhost:50051',
-    'storage_address': 'localhost:50052',
-    'document_address': 'localhost:0',
+    'dispatcher_address': '192.168.1.100:50051',
+    'storage_address': '192.168.1.100:50052',
+    'document_address': '192.168.1.100:0',
 
     # секретный ключ для проверки доступа к сервису
     'secret_key': '123456',

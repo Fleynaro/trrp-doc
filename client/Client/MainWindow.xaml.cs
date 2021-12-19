@@ -54,7 +54,7 @@ namespace Client
         {
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1000);
-            //timer.Tick += SyncDoc;
+            timer.Tick += SyncDoc;
         }
 
         private void LoadDocumentFromServer(object sender, RoutedEventArgs e)
@@ -75,7 +75,7 @@ namespace Client
                     Version = actualDoc.Version
                 };
                 ChangeTextInRichTextBox(actualDoc.Text);
-                //timer.Start();
+                timer.Start();
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace Client
             }
         }
 
-        private void SyncDoc(object sender, RoutedEventArgs e)
+        private void SyncDoc(object sender, EventArgs e)
         {
             try
             {
@@ -106,7 +106,8 @@ namespace Client
                 Version = documentBackup.Version
             };
             wordProcessing.Compare(oldText, newText, dataForSend);
-            server.SendDocumentChanges(dataForSend);
+            if (dataForSend.Changes.Count != 0)
+                server.SendDocumentChanges(dataForSend);
         }
 
         private void ReceiveDiffFromServer()
@@ -121,12 +122,15 @@ namespace Client
                 LoadDocumentFromServer(this, new RoutedEventArgs());
                 docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
             }
-            var text = documentBackup.Text;
-            var newText = wordProcessing.ApplyTextChanges(text, docChanges);
-            docId = docChanges.DocId;
-            documentBackup.Version = docChanges.Version;
-            documentBackup.Text = newText;
-            ChangeTextInRichTextBox(newText);
+            if (docChanges.Changes.Count != 0)
+            {
+                var text = documentBackup.Text;
+                var newText = wordProcessing.ApplyTextChanges(text, docChanges);
+                docId = docChanges.DocId;
+                documentBackup.Version = docChanges.Version;
+                documentBackup.Text = newText;
+                ChangeTextInRichTextBox(newText);
+            }
         }
 
         private void ChangeTextInRichTextBox(string text)

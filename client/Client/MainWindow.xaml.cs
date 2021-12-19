@@ -133,19 +133,18 @@ namespace Client
             }
         }
 
-        private void TestCursor(object sender, RoutedEventArgs e)
-        {
-            var caret = docBox.CaretPosition;
-            docBox.Focus();
-            docBox.CaretPosition = docBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
-
-
-        }
+        //private void TestCursor(object sender, RoutedEventArgs e)
+        //{
+        //    var caret = docBox.CaretPosition;
+        //    docBox.Focus();
+        //    docBox.CaretPosition = docBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+        //}
 
         private void ChangeTextInRichTextBox(string text)
         {
             var docChanges = new DocumentChanges();
-            wordProcessing.Compare(GetTextFromRichTextBox(), text, docChanges);
+            //wordProcessing.Compare(GetTextFromRichTextBox(), text, docChanges);
+            wordProcessing.Compare(documentBackup.Text, text, docChanges);
 
             int prevCursorPos = GetCaretPos();
             int offset = prevCursorPos;
@@ -166,6 +165,7 @@ namespace Client
 
             docBox.Document.Blocks.Clear();
             docBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+            docBox.CaretPosition = docBox.Document.ContentStart;
             int nl_count = 0;
             for (int i = 0; i < text.Length; ++i)
             {
@@ -175,7 +175,7 @@ namespace Client
                     nl_count++;
             }
 
-            for (int i = 0; i < Math.Abs(offset) - nl_count; ++i)
+            for (int i = 0; i < Math.Abs(offset) - nl_count && i < text.Length - nl_count; ++i)
                 docBox.CaretPosition = docBox.CaretPosition.GetNextInsertionPosition(offset > 0 ? LogicalDirection.Forward : LogicalDirection.Backward);
         }
 

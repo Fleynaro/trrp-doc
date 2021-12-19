@@ -17,42 +17,38 @@ namespace Client
         private DispatcherService.DispatcherServiceClient dispatcherClient;
         private StorageService.StorageServiceClient storageClient;
 
-        public CommunicateServer(string ip, int port)
+        public CommunicateServer()
         {
+            var ip = "localhost";
             try
             {
-                storageChannel = new Channel(ip, port, ChannelCredentials.Insecure);
+                storageChannel = new Channel(ip, 50052, ChannelCredentials.Insecure);
                 storageClient = new StorageService.StorageServiceClient(storageChannel);
 
-                dispatcherChannel = new Channel(ip, port, ChannelCredentials.Insecure);
+                dispatcherChannel = new Channel(ip, 50051, ChannelCredentials.Insecure);
                 dispatcherClient = new DispatcherService.DispatcherServiceClient(dispatcherChannel);
             }
             catch (RpcException e)
             {
                 // TODO: Обработать ошибки
-                throw;
+                throw new Exception("Не удалось связаться с серверми диспечера и документов");
             }
         }
 
-        public async Task GetDocuments(List<DocumentInfoResponse> documents)
+        public List<DocumentsResponse.Types.DocumentInfo> GetDocuments()
         {
+            List<DocumentsResponse.Types.DocumentInfo> documents;
             try
             {
-                var documentRequest = new DocumentsRequest();
-                using (var call = storageClient.GetDocuments(documentRequest))
-                {
-                    var responseStream = call.ResponseStream;
-                    while(await responseStream.MoveNext())
-                    {
-                        documents.Add(responseStream.Current);
-                    }
-                }
+                var request = new DocumentsRequest();
+                documents = storageClient.GetDocuments(request).Documents.ToList();
             }
             catch (RpcException e)
             {
                 // TODO: Обработать ошибку
-                throw;
+                throw new Exception("Сервер документов недоступен. Поторите попытку позже.");
             }
+            return documents;
         }
 
         public DocServer GetDocServer(long docId)
@@ -67,7 +63,7 @@ namespace Client
             catch (RpcException e)
             {
                 // TODO: Обработать ошибки
-                throw;
+                throw new Exception("Ошибка получения адреса сервера документа. Проблемы с доступом к диспетчеру.");
             }
             return serverResponse;
         }
@@ -82,7 +78,7 @@ namespace Client
             catch(RpcException e)
             {
                 // TODO: Обработать ошибки
-                throw;
+                throw new Exception("Сервер документа недоступен");
             }
         }
 
@@ -97,7 +93,7 @@ namespace Client
             catch (RpcException e)
             {
                 // TODO: Обработать ошибки
-                throw;
+                throw new Exception("Ошибка получения актуальной версии документа");
             }
             return document;
         }
@@ -116,7 +112,13 @@ namespace Client
             catch (RpcException e)
             {
                 // TODO: Обработать ошибки
-                throw;
+                if (StatusCode.NotFound == e.StatusCode)
+                {
+                    throw new GetDocumentChangesException();
+                }
+                else if (StatusCode.Unavailable == e.StatusCode)
+                    throw new Exception("Сервер документа недоступен. Проверьте соединение с сетью.");
+                else throw new Exception("Ошибка при получении изменений документа.");
             }
             return documentChanges;
         }
@@ -130,7 +132,7 @@ namespace Client
             catch (RpcException e)
             {
                 // TODO: Обработать ошибки
-                throw;
+                throw new Exception("Ошибка отправки изменений. Проверьте соединение с сетью.");
             }
         }
     }

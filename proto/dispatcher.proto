@@ -8,8 +8,7 @@ message DocServerRequest {
 }
 
 message DocServer {
-    string host = 1;
-    int32 port = 2;
+    string address = 1;
 }
 
 // добавление нового сервера документов

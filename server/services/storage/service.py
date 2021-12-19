@@ -22,7 +22,7 @@ class StorageService(
         """
         for id, title in self.documents.items():
             yield DocumentInfoResponse(
-                id=id,
+                docId=id,
                 title=title,
             )
         
@@ -34,7 +34,7 @@ class StorageService(
         if docId not in self.documents:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details('Document not found!')
-            return DocumentContentResponse()
+            return DocumentContentResponse
 
         doc_dir = CFG['storage']['dir']
         text = ''

@@ -20,25 +20,30 @@ class DispatcherService(
     def GetDocServer(self, request, context):
         """получение сервера по ид документа
         """
-        server_idx = request.docId % len(self.doc_servers)
-        server = self.doc_servers[server_idx]
+        server_addr = ''
 
-        # check server availability
-        channel = grpc.insecure_channel(f"{server['host']}:{server['port']}")
-        stub = document_pb2_grpc.DocumentServiceStub(channel)
-        try:
-            stub.Ping(PingRequest(docId=request.docId))
-        except grpc.RpcError as e:
-            # todo: исполнение кода параллельное или асинхронное?
-            self.doc_servers.pop(server_idx)
-        
-        # if no servers available
-        if not self.doc_servers:
-            context.set_code(grpc.StatusCode.NOT_FOUND)
-            context.set_details('No servers available!')
-            return DocServer()
+        # try connect to server
+        while server_addr == '':
+            # if no servers available
+            if not self.doc_servers:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details('No servers available!')
+                return DocServer()
 
-        return DocServer(host=server['host'], port=server['port'])
+            # select random server
+            server_idx = request.docId % len(self.doc_servers)
+            server_addr = self.doc_servers[server_idx]
+
+            # check server availability
+            channel = grpc.insecure_channel(server_addr)
+            stub = document_pb2_grpc.DocumentServiceStub(channel)
+            try:
+                stub.Ping(PingRequest(docId=request.docId, secretKey=CFG['secret_key']))
+            except grpc.RpcError as e:
+                self.doc_servers.remove(server_addr)
+                server_addr = ''
+
+        return DocServer(address=server_addr)
 
     
     def AddDocServer(self, request, context):
@@ -48,8 +53,5 @@ class DispatcherService(
             context.set_code(grpc.StatusCode.PERMISSION_DENIED)
             context.set_details('Permission denied!')
             return AddDocServerResponse()
-        self.doc_servers.append({
-            'host': request.docServer.host,
-            'port': request.docServer.port,
-        })
+        self.doc_servers.append(request.docServer.address)
         return AddDocServerResponse()

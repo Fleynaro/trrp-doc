@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x10\x64ispatcher.proto\x12\x03\x64oc\"!\n\x10\x44ocServerRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"\'\n\tDocServer\x12\x0c\n\x04host\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x05\"K\n\x13\x41\x64\x64\x44ocServerRequest\x12!\n\tdocServer\x18\x01 \x01(\x0b\x32\x0e.doc.DocServer\x12\x11\n\tsecretKey\x18\x02 \x01(\t\"\x16\n\x14\x41\x64\x64\x44ocServerResponse2\x93\x01\n\x11\x44ispatcherService\x12\x37\n\x0cGetDocServer\x12\x15.doc.DocServerRequest\x1a\x0e.doc.DocServer\"\x00\x12\x45\n\x0c\x41\x64\x64\x44ocServer\x12\x18.doc.AddDocServerRequest\x1a\x19.doc.AddDocServerResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x10\x64ispatcher.proto\x12\x03\x64oc\"!\n\x10\x44ocServerRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"\x1c\n\tDocServer\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"K\n\x13\x41\x64\x64\x44ocServerRequest\x12!\n\tdocServer\x18\x01 \x01(\x0b\x32\x0e.doc.DocServer\x12\x11\n\tsecretKey\x18\x02 \x01(\t\"\x16\n\x14\x41\x64\x64\x44ocServerResponse2\x93\x01\n\x11\x44ispatcherService\x12\x37\n\x0cGetDocServer\x12\x15.doc.DocServerRequest\x1a\x0e.doc.DocServer\"\x00\x12\x45\n\x0c\x41\x64\x64\x44ocServer\x12\x18.doc.AddDocServerRequest\x1a\x19.doc.AddDocServerResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -66,16 +66,9 @@ _DOCSERVER = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='host', full_name='doc.DocServer.host', index=0,
+      name='address', full_name='doc.DocServer.address', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='port', full_name='doc.DocServer.port', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -92,7 +85,7 @@ _DOCSERVER = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=60,
-  serialized_end=99,
+  serialized_end=88,
 )
 
 
@@ -130,8 +123,8 @@ _ADDDOCSERVERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=101,
-  serialized_end=176,
+  serialized_start=90,
+  serialized_end=165,
 )
 
 
@@ -155,8 +148,8 @@ _ADDDOCSERVERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=178,
-  serialized_end=200,
+  serialized_start=167,
+  serialized_end=189,
 )
 
 _ADDDOCSERVERREQUEST.fields_by_name['docServer'].message_type = _DOCSERVER
@@ -203,8 +196,8 @@ _DISPATCHERSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=203,
-  serialized_end=350,
+  serialized_start=192,
+  serialized_end=339,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetDocServer',

@@ -133,11 +133,58 @@ namespace Client
             }
         }
 
+        private void TestCursor(object sender, RoutedEventArgs e)
+        {
+            var caret = docBox.CaretPosition;
+            docBox.Focus();
+            docBox.CaretPosition = docBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+
+
+        }
+
         private void ChangeTextInRichTextBox(string text)
         {
+            var docChanges = new DocumentChanges();
+            wordProcessing.Compare(GetTextFromRichTextBox(), text, docChanges);
+
+            int prevCursorPos = GetCaretPos();
+            int offset = prevCursorPos;
+            for (int i = 0; i < docChanges.Changes.Count; i++)
+            {
+                var change = docChanges.Changes[i];
+                if (change.Pos >= prevCursorPos)
+                    continue;
+                if (change.Type == DocumentChanges.Types.ChangeType.Insert)
+                {
+                    offset += change.Text.Length;
+                }
+                else if (change.Type == DocumentChanges.Types.ChangeType.Delete)
+                {
+                    offset -= change.Text.Length;
+                }
+            }
+
             docBox.Document.Blocks.Clear();
             docBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-            docBox.CaretPosition = docBox.CaretPosition.DocumentEnd;
+            int nl_count = 0;
+            for (int i = 0; i < text.Length; ++i)
+            {
+                if (i >= offset)
+                    break;
+                if (text[i] == '\n')
+                    nl_count++;
+            }
+
+            for (int i = 0; i < Math.Abs(offset) - nl_count; ++i)
+                docBox.CaretPosition = docBox.CaretPosition.GetNextInsertionPosition(offset > 0 ? LogicalDirection.Forward : LogicalDirection.Backward);
+        }
+
+        private int GetCaretPos()
+        {
+            TextPointer start = docBox.Document.ContentStart;
+            TextPointer caret = docBox.CaretPosition;
+            TextRange range = new TextRange(start, caret);
+            return range.Text.Length;
         }
 
         private string GetTextFromRichTextBox()

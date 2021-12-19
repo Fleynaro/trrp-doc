@@ -7,15 +7,18 @@ import "document_content.proto";
 // получение списка документов
 message DocumentsRequest {}
 
-message DocumentInfoResponse {
-    int64 docId = 1;
-    string title = 2;
+message DocumentsResponse {
+    message DocumentInfo {
+        int64 docId = 1;
+        string title = 2;
+    }
+    repeated DocumentInfo documents = 1;
 }
 
 // сервис по работе с хранилищем документов
 service StorageService {
     // получение списка документов
-    rpc GetDocuments(DocumentsRequest) returns (stream DocumentInfoResponse) {}
+    rpc GetDocuments(DocumentsRequest) returns (DocumentsResponse) {}
 
     // получение содержимого документа
     rpc GetDocumentContent(DocumentContentRequest) returns (DocumentContentResponse) {}

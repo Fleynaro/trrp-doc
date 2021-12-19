@@ -16,10 +16,10 @@ class StorageServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetDocuments = channel.unary_stream(
+        self.GetDocuments = channel.unary_unary(
                 '/doc.StorageService/GetDocuments',
                 request_serializer=storage__pb2.DocumentsRequest.SerializeToString,
-                response_deserializer=storage__pb2.DocumentInfoResponse.FromString,
+                response_deserializer=storage__pb2.DocumentsResponse.FromString,
                 )
         self.GetDocumentContent = channel.unary_unary(
                 '/doc.StorageService/GetDocumentContent',
@@ -49,10 +49,10 @@ class StorageServiceServicer(object):
 
 def add_StorageServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetDocuments': grpc.unary_stream_rpc_method_handler(
+            'GetDocuments': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDocuments,
                     request_deserializer=storage__pb2.DocumentsRequest.FromString,
-                    response_serializer=storage__pb2.DocumentInfoResponse.SerializeToString,
+                    response_serializer=storage__pb2.DocumentsResponse.SerializeToString,
             ),
             'GetDocumentContent': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDocumentContent,
@@ -81,9 +81,9 @@ class StorageService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/doc.StorageService/GetDocuments',
+        return grpc.experimental.unary_unary(request, target, '/doc.StorageService/GetDocuments',
             storage__pb2.DocumentsRequest.SerializeToString,
-            storage__pb2.DocumentInfoResponse.FromString,
+            storage__pb2.DocumentsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

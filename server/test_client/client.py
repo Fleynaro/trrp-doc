@@ -23,9 +23,9 @@ def client():
 
 
     # получаем список доступных документов
-    documents = [d for d in storage_stub.GetDocuments(DocumentsRequest())]
+    response = storage_stub.GetDocuments(DocumentsRequest())
     # выбираем первый документ
-    my_doc = documents[0]
+    my_doc = response.documents[0]
 
 
     # получаем сервер для работы с данным документом

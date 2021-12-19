@@ -2,7 +2,7 @@ from os import listdir
 import grpc
 
 from document_content_pb2 import DocumentContentResponse
-from storage_pb2 import DocumentInfoResponse
+from storage_pb2 import DocumentsResponse
 import storage_pb2_grpc
 
 from config import CFG
@@ -20,11 +20,10 @@ class StorageService(
     def GetDocuments(self, request, context):
         """получение списка документов
         """
+        response = DocumentsResponse()
         for id, title in self.documents.items():
-            yield DocumentInfoResponse(
-                docId=id,
-                title=title,
-            )
+            response.documents.append(DocumentsResponse.DocumentInfo(docId=id, title=title))
+        return response
         
     def GetDocumentContent(self, request, context):
         """получение содержимого документа

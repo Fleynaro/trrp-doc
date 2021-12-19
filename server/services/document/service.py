@@ -1,6 +1,6 @@
 import grpc
 
-import document_sync as doc_sync
+import document_sync as ds
 
 from document_content_pb2 import DocumentContentRequest, DocumentContentResponse
 from document_pb2 import PingResponse, DocumentChanges, DocumentChangesResponse
@@ -30,7 +30,7 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         if docId not in self.active_documents:
             # load the document and make it active
             response = self.storage_stub.GetDocumentContent(DocumentContentRequest(docId=docId))
-            self.active_documents[docId] = doc_sync.DocumentSync(response.text)
+            self.active_documents[docId] = ds.DocumentSync(response.text)
         return PingResponse()
 
     def GetActualDocumentContent(self, request, context):
@@ -68,11 +68,15 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         if not doc_sync:
             return DocumentChangesResponse()
 
-        # ...
+        doc_changes = ds.DocumentChanges(
+            changes=[ds.TextChange(ch.type, ch.pos, ch.text) for ch in request.changes],
+            version=request.version
+        )
+        doc_sync.add_changes(doc_changes)
 
         return DocumentChangesResponse()
 
-    def get_doc_sync(self, doc_id, context) -> doc_sync.DocumentSync:
+    def get_doc_sync(self, doc_id, context) -> ds.DocumentSync:
         """проверка наличия документа
         """
         if doc_id not in self.active_documents:

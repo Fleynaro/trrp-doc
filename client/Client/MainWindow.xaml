@@ -23,7 +23,7 @@
         <!--Панель с кнопками-->
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
             <Button Content="Загрузить" Click="LoadDocumentFromServer" Margin="5 0 5 0" Padding="4 2 4 2"/>
-            <Button Content="Синхронизировать" Margin="5 0 5 0" Padding="4 2 4 2"/>
+            <Button Content="Синхронизировать" Click="SyncDoc" Margin="5 0 5 0" Padding="4 2 4 2"/>
         </StackPanel>
     </Grid>
 </Window>

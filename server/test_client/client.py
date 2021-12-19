@@ -1,3 +1,4 @@
+import time
 import grpc
 
 from dispatcher_pb2 import DocServerRequest
@@ -14,6 +15,8 @@ def apply_changes(text, changes):
 
 
 def client():
+    time.sleep(2)
+
     # диспетчер серверов
     channel = grpc.insecure_channel("localhost:50051")
     dispatcher_stub = dispatcher_pb2_grpc.DispatcherServiceStub(channel)
@@ -40,7 +43,7 @@ def client():
 
     # делаем изменения в содержимом через "редактор" (вставка в конец)
     my_doc_prev_text = my_doc_text # !!!сохраняем содержимое документа до изменений!!!
-    my_doc_text += " hello!"
+    my_doc_text += "I am alex!"
     # отправляем изменения, сделанные относительно версии полученного документа через GetActualDocumentContent
     doc_stub.SendDocumentChanges(DocumentChanges(
         docId=my_doc.docId,
@@ -48,10 +51,27 @@ def client():
         changes=[
             DocumentChanges.Change(
                 type=DocumentChanges.CHANGE_TYPE_INSERT,
-                pos=len(my_doc_text),
-                text="hello!")
+                pos=len(my_doc_prev_text),
+                text="I am alex!")
             ]
     ))
+
+    # параллельное редактирование несколькими людьми
+    if True:
+        my_doc_text += " I am fleynaro!"
+        doc_stub.SendDocumentChanges(DocumentChanges(
+            docId=my_doc.docId,
+            version=response.version,
+            changes=[
+                DocumentChanges.Change(
+                    type=DocumentChanges.CHANGE_TYPE_INSERT,
+                    pos=len(my_doc_prev_text),
+                    text="I am fleynaro!")
+                ]
+        ))
+
+        text = doc_stub.GetActualDocumentContent(DocumentContentRequest(docId=my_doc.docId)).text
+        print(text)
 
     # получаем последние изменения в документе
     doc_last_changes = doc_stub.GetDocumentChanges(DocumentChangesRequest(docId=my_doc.docId, version=response.version))

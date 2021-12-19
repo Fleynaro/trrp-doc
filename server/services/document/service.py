@@ -48,6 +48,8 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         doc_sync = self.get_doc_sync(request.docId, context)
         if not doc_sync:
             return DocumentChanges()
+        if not self.version_exists(doc_sync, request.version, context):
+            return DocumentChanges()
 
         doc_changes = doc_sync.get_last_changes(request.version)
 
@@ -67,11 +69,14 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         doc_sync = self.get_doc_sync(request.docId, context)
         if not doc_sync:
             return DocumentChangesResponse()
+        if not self.version_exists(doc_sync, request.version, context):
+            return DocumentChangesResponse()
 
         doc_changes = ds.DocumentChanges(
             changes=[ds.TextChange(ch.type, ch.pos, ch.text) for ch in request.changes],
             version=request.version
         )
+
         doc_sync.add_changes(doc_changes)
 
         return DocumentChangesResponse()
@@ -84,4 +89,12 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
             context.set_details('Document not found!')
             return None
         return self.active_documents[doc_id]
-        
+
+    def version_exists(self, doc_sync: ds.DocumentSync, version: int, context):
+        """проверка наличия версии
+        """
+        if doc_sync.version_exists(version):
+            return True
+        context.set_code(grpc.StatusCode.NOT_FOUND)
+        context.set_details("Version {} not found!".format(version))
+        return False

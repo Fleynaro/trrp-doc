@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Doc;
+using Grpc.Core;
 
 namespace Client
 {
@@ -26,7 +27,7 @@ namespace Client
         private CommunicateServer server;
         private WordProcessing wordProcessing;
         private DocumentContentResponse documentBackup;
-        private List<DocumentInfoResponse> documents;
+        private List<DocumentsResponse.Types.DocumentInfo> documents;
         private DispatcherTimer timer;
 
         public MainWindow()
@@ -34,18 +35,25 @@ namespace Client
             InitializeComponent();
             wordProcessing = new WordProcessing();
             CreateTimer();
-            server = new CommunicateServer("localhost", 50051);
-            server.GetDocuments(documents).Wait();
-            foreach (var doc in documents)
+            try
             {
-                documentsList.Items.Add(doc.Title);
+                server = new CommunicateServer();
+                documents = server.GetDocuments();
+                foreach (var doc in documents)
+                {
+                    documentsList.Items.Add(doc.Title);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void CreateTimer()
         {
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += SyncDoc;
         }
 
@@ -54,25 +62,38 @@ namespace Client
             if (timer.IsEnabled)
                 timer.Stop();
 
-            var doc = documents.Where(z => z.Title == documentsList.SelectedItem.ToString()).First();
-            docId = doc.DocId;
-            var docServer = server.GetDocServer(doc.DocId);
-            server.ConnectToDocumentServer(docServer.Address);
-            var actualDoc = server.GetActualDocumentContent(doc.DocId);
-            documentBackup = new DocumentContentResponse()
+            try
             {
-                Text = actualDoc.Text,
-                Version = actualDoc.Version
-            };
-            ChangeTextInRichTextBox(actualDoc.Text);
-
-            timer.Start();
+                var doc = documents.Where(z => z.Title == documentsList.SelectedItem.ToString()).First();
+                docId = doc.DocId;
+                var docServer = server.GetDocServer(docId);
+                server.ConnectToDocumentServer(docServer.Address);
+                var actualDoc = server.GetActualDocumentContent(docId);
+                documentBackup = new DocumentContentResponse()
+                {
+                    Text = actualDoc.Text,
+                    Version = actualDoc.Version
+                };
+                ChangeTextInRichTextBox(actualDoc.Text);
+                timer.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void SyncDoc(object sender, EventArgs e)
         {
-            SendDiffToServer();
-            ReceiveDiffFromServer();
+            try
+            {
+                SendDiffToServer();
+                ReceiveDiffFromServer();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void SendDiffToServer()
@@ -90,9 +111,21 @@ namespace Client
 
         private void ReceiveDiffFromServer()
         {
-            var docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
+            DocumentChanges docChanges;
+            try
+            {
+                docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
+            }
+            catch(GetDocumentChangesException)
+            {
+                LoadDocumentFromServer(this, new RoutedEventArgs());
+                docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
+            }
             var text = documentBackup.Text;
             var newText = wordProcessing.ApplyTextChanges(text, docChanges);
+            docId = docChanges.DocId;
+            documentBackup.Version = docChanges.Version;
+            documentBackup.Text = newText;
             ChangeTextInRichTextBox(newText);
         }
 
@@ -100,11 +133,13 @@ namespace Client
         {
             docBox.Document.Blocks.Clear();
             docBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+            docBox.CaretPosition = docBox.CaretPosition.DocumentEnd;
         }
 
         private string GetTextFromRichTextBox()
         {
-            return new TextRange(docBox.Document.ContentStart, docBox.Document.ContentEnd).Text;
+            var text = new TextRange(docBox.Document.ContentStart, docBox.Document.ContentEnd).Text;
+            return text.Substring(0, text.Length - 2);
         }
     }
 }

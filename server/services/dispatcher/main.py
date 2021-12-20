@@ -13,4 +13,5 @@ def serve():
         DispatcherService(), server)
     server.add_insecure_port(CFG['dispatcher_address'])
     server.start()
+    print("dispatcher started at {}".format(CFG['dispatcher_address']))
     server.wait_for_termination()

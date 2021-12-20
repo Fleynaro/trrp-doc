@@ -13,4 +13,5 @@ def serve():
         StorageService(), server)
     server.add_insecure_port(CFG['storage_address'])
     server.start()
+    print("storage server started at {}".format(CFG['storage_address']))
     server.wait_for_termination()

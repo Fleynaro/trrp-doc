@@ -34,4 +34,5 @@ def serve():
     notify_dispatcher(port)
 
     server.start()
+    print("document server started at {}".format(CFG['document_address'].split(':')[0] + ':' + str(port)))
     server.wait_for_termination()

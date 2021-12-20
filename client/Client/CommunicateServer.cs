@@ -20,7 +20,7 @@ namespace Client
 
         public CommunicateServer()
         {
-            var ips = Dns.GetHostAddresses("trrp1.mooo.com");
+            var ips = Dns.GetHostAddresses("trrp.mooo.com");
             var ip = "localhost";
             ip = ips[0].ToString();
             try

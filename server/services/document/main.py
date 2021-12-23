@@ -1,3 +1,7 @@
+import sys
+sys.path.append("../../grpc")
+sys.path.append("../../shared")
+
 from concurrent import futures
 import grpc
 
@@ -36,3 +40,7 @@ def serve():
     server.start()
     print("document server started at {}".format(CFG['document_address'].split(':')[0] + ':' + str(port)))
     server.wait_for_termination()
+
+
+if __name__ == '__main__':
+    serve()

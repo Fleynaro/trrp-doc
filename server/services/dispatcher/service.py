@@ -1,12 +1,13 @@
 import grpc
 
-from dispatcher_pb2 import DocServer, AddDocServerResponse
+from dispatcher_pb2 import DocServer, AddDocServerResponse, DocumentsResponse
 from document_pb2 import PingRequest
 import dispatcher_pb2_grpc
 import document_pb2_grpc
 
 from config import CFG
 
+import kubernetes as k8s
 
 class DispatcherService(
     dispatcher_pb2_grpc.DispatcherServiceServicer):
@@ -44,6 +45,22 @@ class DispatcherService(
                 server_addr = ''
 
         return DocServer(address=server_addr)
+
+
+    def GetDocuments(self, request, context):
+        """получение списка документов
+        """
+        response = DocumentsResponse()
+        k8s.config.load_kube_config()
+
+        v1 = k8s.client.CoreV1Api()
+        print("Listing pods with their IPs:")
+        ret = v1.list_pod_for_all_namespaces(watch=False)
+        for i in ret.items:
+            print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+            response.documents.append(
+                DocumentsResponse.DocumentInfo(docId=100, title=f'{i.status.pod_ip}/{i.metadata.name}'))
+        return response
 
     
     def AddDocServer(self, request, context):

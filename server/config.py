@@ -5,7 +5,7 @@ CFG = {
     },
 
     # адреса серверов
-    'dispatcher_address': '192.168.1.100:50051',
+    'dispatcher_address': '0.0.0.0:50051',
     'storage_address': '192.168.1.100:50052',
     'document_address': '192.168.1.100:0',
 

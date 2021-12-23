@@ -2,14 +2,22 @@ syntax = "proto3";
 
 package doc;
 
-import "document_content.proto";
-
 // проверка доступности сервера
 message PingRequest {
     int64 docId = 1;
     string secretKey = 2;
 }
 message PingResponse {}
+
+// получение содержимого документа
+message DocumentContentRequest {
+    int64 docId = 1;
+}
+
+message DocumentContentResponse {
+    int32 version = 1;
+    string text = 2;
+}
 
 // изменения в документе
 message DocumentChanges {

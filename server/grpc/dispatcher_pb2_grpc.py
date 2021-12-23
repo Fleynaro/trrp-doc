@@ -20,6 +20,11 @@ class DispatcherServiceStub(object):
                 request_serializer=dispatcher__pb2.DocServerRequest.SerializeToString,
                 response_deserializer=dispatcher__pb2.DocServer.FromString,
                 )
+        self.GetDocuments = channel.unary_unary(
+                '/doc.DispatcherService/GetDocuments',
+                request_serializer=dispatcher__pb2.DocumentsRequest.SerializeToString,
+                response_deserializer=dispatcher__pb2.DocumentsResponse.FromString,
+                )
         self.AddDocServer = channel.unary_unary(
                 '/doc.DispatcherService/AddDocServer',
                 request_serializer=dispatcher__pb2.AddDocServerRequest.SerializeToString,
@@ -33,6 +38,13 @@ class DispatcherServiceServicer(object):
 
     def GetDocServer(self, request, context):
         """получение сервера по ид документа
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDocuments(self, request, context):
+        """получение списка документов
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -52,6 +64,11 @@ def add_DispatcherServiceServicer_to_server(servicer, server):
                     servicer.GetDocServer,
                     request_deserializer=dispatcher__pb2.DocServerRequest.FromString,
                     response_serializer=dispatcher__pb2.DocServer.SerializeToString,
+            ),
+            'GetDocuments': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDocuments,
+                    request_deserializer=dispatcher__pb2.DocumentsRequest.FromString,
+                    response_serializer=dispatcher__pb2.DocumentsResponse.SerializeToString,
             ),
             'AddDocServer': grpc.unary_unary_rpc_method_handler(
                     servicer.AddDocServer,
@@ -83,6 +100,23 @@ class DispatcherService(object):
         return grpc.experimental.unary_unary(request, target, '/doc.DispatcherService/GetDocServer',
             dispatcher__pb2.DocServerRequest.SerializeToString,
             dispatcher__pb2.DocServer.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetDocuments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/doc.DispatcherService/GetDocuments',
+            dispatcher__pb2.DocumentsRequest.SerializeToString,
+            dispatcher__pb2.DocumentsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

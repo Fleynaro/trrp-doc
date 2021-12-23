@@ -2,7 +2,6 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import document_content_pb2 as document__content__pb2
 import document_pb2 as document__pb2
 
 
@@ -23,8 +22,8 @@ class DocumentServiceStub(object):
                 )
         self.GetActualDocumentContent = channel.unary_unary(
                 '/doc.DocumentService/GetActualDocumentContent',
-                request_serializer=document__content__pb2.DocumentContentRequest.SerializeToString,
-                response_deserializer=document__content__pb2.DocumentContentResponse.FromString,
+                request_serializer=document__pb2.DocumentContentRequest.SerializeToString,
+                response_deserializer=document__pb2.DocumentContentResponse.FromString,
                 )
         self.GetDocumentChanges = channel.unary_unary(
                 '/doc.DocumentService/GetDocumentChanges',
@@ -80,8 +79,8 @@ def add_DocumentServiceServicer_to_server(servicer, server):
             ),
             'GetActualDocumentContent': grpc.unary_unary_rpc_method_handler(
                     servicer.GetActualDocumentContent,
-                    request_deserializer=document__content__pb2.DocumentContentRequest.FromString,
-                    response_serializer=document__content__pb2.DocumentContentResponse.SerializeToString,
+                    request_deserializer=document__pb2.DocumentContentRequest.FromString,
+                    response_serializer=document__pb2.DocumentContentResponse.SerializeToString,
             ),
             'GetDocumentChanges': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDocumentChanges,
@@ -133,8 +132,8 @@ class DocumentService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/doc.DocumentService/GetActualDocumentContent',
-            document__content__pb2.DocumentContentRequest.SerializeToString,
-            document__content__pb2.DocumentContentResponse.FromString,
+            document__pb2.DocumentContentRequest.SerializeToString,
+            document__pb2.DocumentContentResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

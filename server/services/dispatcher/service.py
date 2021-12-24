@@ -39,8 +39,9 @@ class DispatcherService(
         try:
             stub.AddDocument(AddDocumentRequest(docId=request.docId, secretKey=CFG['secret_key']))
         except grpc.RpcError as e:
-            self.doc_servers.remove(server_addr)
-            server_addr = ''
+            context.set_code(grpc.StatusCode.UNAVAILABLE)
+            context.set_details('Document server unavailable!')
+            return DocServer()
         return DocServer(address=server_addr)
 
 

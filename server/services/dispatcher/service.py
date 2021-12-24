@@ -19,8 +19,8 @@ class DispatcherService(
     def __init__(self):
         super().__init__()
         self.doc_servers = [
-            'trrp.mooo.com:30001',
-            'trrp.mooo.com:30002',
+            'trrp-disp.mooo.com:30001',
+            'trrp-disp.mooo.com:30002',
         ]
         storage_client = storage.Client()
         self.doc_bucket = storage_client.get_bucket(CFG['storage_bucket'])

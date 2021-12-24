@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 using Doc;
 using Grpc.Core;
 
@@ -28,16 +27,18 @@ namespace Client
         private WordProcessing wordProcessing;
         private DocumentContentResponse documentBackup;
         private List<DocumentsResponse.Types.DocumentInfo> documents;
-        private DispatcherTimer timer;
+        private Timer timer;
+        private string success = "Успешное подключение к серверам";
 
         public MainWindow()
         {
             InitializeComponent();
             wordProcessing = new WordProcessing();
-            CreateTimer();
+            timer = new Timer(SyncDoc);
             try
             {
-                server = new CommunicateServer();
+                server = new CommunicateServer("trrp.mooo.com");
+                server.ConnectToDispatcher();
                 documents = server.GetDocuments();
                 foreach (var doc in documents)
                 {
@@ -46,41 +47,44 @@ namespace Client
             }
             catch(Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                logTextBlock.Text = ex.Message;
+                //MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void CreateTimer()
+        private void GetActualDocument()
         {
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
-            timer.Tick += SyncDoc;
+            var docServer = server.GetDocServer(docId);
+            server.ConnectToDocumentServer(docServer.Address);
+            var actualDoc = server.GetActualDocumentContent(docId);
+            documentBackup = new DocumentContentResponse()
+            {
+                Text = actualDoc.Text,
+                Version = actualDoc.Version
+            };
+            ChangeTextInRichTextBox(actualDoc.Text);
+            logTextBlock.Text = success;
         }
 
         private void LoadDocumentFromServer(object sender, RoutedEventArgs e)
         {
-            if (timer.IsEnabled)
-                timer.Stop();
-
             try
             {
                 var doc = documents.Where(z => z.Title == documentsList.SelectedItem.ToString()).First();
                 docId = doc.DocId;
-                var docServer = server.GetDocServer(docId);
-                server.ConnectToDocumentServer(docServer.Address);
-                var actualDoc = server.GetActualDocumentContent(docId);
-                documentBackup = new DocumentContentResponse()
-                {
-                    Text = actualDoc.Text,
-                    Version = actualDoc.Version
-                };
-                ChangeTextInRichTextBox(actualDoc.Text);
+                server.ConnectToDispatcher();
+                GetActualDocument();
                 timer.Start();
             }
-            catch (Exception ex)
+            catch (UnavailableDocumentServerException)
             {
-                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                logTextBlock.Text = "Попытка переподключения к рабочему серверу провалилась";
+                //throw new UnavailableDocumentServerException("Попытка переподключения к рабочему серверу провалилась");
             }
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void SyncDoc(object sender, EventArgs e)
@@ -92,7 +96,8 @@ namespace Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                logTextBlock.Text = ex.Message;
+                //MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -106,8 +111,15 @@ namespace Client
                 Version = documentBackup.Version
             };
             wordProcessing.Compare(oldText, newText, dataForSend);
-            if (dataForSend.Changes.Count != 0)
-                server.SendDocumentChanges(dataForSend);
+            try
+            {
+                if (dataForSend.Changes.Count != 0)
+                    server.SendDocumentChanges(dataForSend);
+            }
+            catch(UnavailableDocumentServerException)
+            {
+                GetActualDocument();
+            }
         }
 
         private void ReceiveDiffFromServer()
@@ -117,9 +129,14 @@ namespace Client
             {
                 docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
             }
-            catch(GetDocumentChangesException)
+            catch(NotFoundDocumentException)
             {
-                LoadDocumentFromServer(this, new RoutedEventArgs());
+                GetActualDocument();
+                docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
+            }
+            catch (UnavailableDocumentServerException)
+            {
+                GetActualDocument();
                 docChanges = server.GetDocumentChanges(docId, documentBackup.Version);
             }
             if (docChanges.Changes.Count != 0)

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: document
-        image: fleynaro/trrp:document-v1.1
+        image: fleynaro/trrp:document-v2.3
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 50051
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: document
-        image: fleynaro/trrp:document-v1.1
+        image: fleynaro/trrp:document-v2.3
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 50051

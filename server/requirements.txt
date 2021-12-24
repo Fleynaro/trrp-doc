@@ -1,4 +1,4 @@
 grpcio
 grpcio-tools
-#google-cloud-storage
+google-cloud-storage
 kubernetes

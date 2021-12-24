@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x64ocument.proto\x12\x03\x64oc\"6\n\x12\x41\x64\x64\x44ocumentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x11\n\tsecretKey\x18\x02 \x01(\t\"\x15\n\x13\x41\x64\x64\x44ocumentResponse\"\'\n\x16\x44ocumentContentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"8\n\x17\x44ocumentContentResponse\x12\x0f\n\x07version\x18\x01 \x01(\x05\x12\x0c\n\x04text\x18\x02 \x01(\t\"\xf1\x01\n\x0f\x44ocumentChanges\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12,\n\x07\x63hanges\x18\x03 \x03(\x0b\x32\x1b.doc.DocumentChanges.Change\x1aR\n\x06\x43hange\x12-\n\x04type\x18\x01 \x01(\x0e\x32\x1f.doc.DocumentChanges.ChangeType\x12\x0b\n\x03pos\x18\x02 \x01(\x03\x12\x0c\n\x04text\x18\x03 \x01(\t\"<\n\nChangeType\x12\x16\n\x12\x43HANGE_TYPE_INSERT\x10\x00\x12\x16\n\x12\x43HANGE_TYPE_DELETE\x10\x01\"8\n\x16\x44ocumentChangesRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\"\x19\n\x17\x44ocumentChangesResponse2\xc6\x02\n\x0f\x44ocumentService\x12\x42\n\x0b\x41\x64\x64\x44ocument\x12\x17.doc.AddDocumentRequest\x1a\x18.doc.AddDocumentResponse\"\x00\x12W\n\x18GetActualDocumentContent\x12\x1b.doc.DocumentContentRequest\x1a\x1c.doc.DocumentContentResponse\"\x00\x12I\n\x12GetDocumentChanges\x12\x1b.doc.DocumentChangesRequest\x1a\x14.doc.DocumentChanges\"\x00\x12K\n\x13SendDocumentChanges\x12\x14.doc.DocumentChanges\x1a\x1c.doc.DocumentChangesResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0e\x64ocument.proto\x12\x03\x64oc\"E\n\x12\x41\x64\x64\x44ocumentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\r\n\x05title\x18\x02 \x01(\t\x12\x11\n\tsecretKey\x18\x03 \x01(\t\"\x15\n\x13\x41\x64\x64\x44ocumentResponse\"\'\n\x16\x44ocumentContentRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\"8\n\x17\x44ocumentContentResponse\x12\x0f\n\x07version\x18\x01 \x01(\x05\x12\x0c\n\x04text\x18\x02 \x01(\t\"\xf1\x01\n\x0f\x44ocumentChanges\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12,\n\x07\x63hanges\x18\x03 \x03(\x0b\x32\x1b.doc.DocumentChanges.Change\x1aR\n\x06\x43hange\x12-\n\x04type\x18\x01 \x01(\x0e\x32\x1f.doc.DocumentChanges.ChangeType\x12\x0b\n\x03pos\x18\x02 \x01(\x03\x12\x0c\n\x04text\x18\x03 \x01(\t\"<\n\nChangeType\x12\x16\n\x12\x43HANGE_TYPE_INSERT\x10\x00\x12\x16\n\x12\x43HANGE_TYPE_DELETE\x10\x01\"8\n\x16\x44ocumentChangesRequest\x12\r\n\x05\x64ocId\x18\x01 \x01(\x03\x12\x0f\n\x07version\x18\x02 \x01(\x05\"\x19\n\x17\x44ocumentChangesResponse2\xc6\x02\n\x0f\x44ocumentService\x12\x42\n\x0b\x41\x64\x64\x44ocument\x12\x17.doc.AddDocumentRequest\x1a\x18.doc.AddDocumentResponse\"\x00\x12W\n\x18GetActualDocumentContent\x12\x1b.doc.DocumentContentRequest\x1a\x1c.doc.DocumentContentResponse\"\x00\x12I\n\x12GetDocumentChanges\x12\x1b.doc.DocumentChangesRequest\x1a\x14.doc.DocumentChanges\"\x00\x12K\n\x13SendDocumentChanges\x12\x14.doc.DocumentChanges\x1a\x1c.doc.DocumentChangesResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -44,8 +44,8 @@ _DOCUMENTCHANGES_CHANGETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=383,
-  serialized_end=443,
+  serialized_start=398,
+  serialized_end=458,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENTCHANGES_CHANGETYPE)
 
@@ -66,8 +66,15 @@ _ADDDOCUMENTREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='secretKey', full_name='doc.AddDocumentRequest.secretKey', index=1,
+      name='title', full_name='doc.AddDocumentRequest.title', index=1,
       number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='secretKey', full_name='doc.AddDocumentRequest.secretKey', index=2,
+      number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -85,7 +92,7 @@ _ADDDOCUMENTREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=23,
-  serialized_end=77,
+  serialized_end=92,
 )
 
 
@@ -109,8 +116,8 @@ _ADDDOCUMENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=79,
-  serialized_end=100,
+  serialized_start=94,
+  serialized_end=115,
 )
 
 
@@ -141,8 +148,8 @@ _DOCUMENTCONTENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=102,
-  serialized_end=141,
+  serialized_start=117,
+  serialized_end=156,
 )
 
 
@@ -180,8 +187,8 @@ _DOCUMENTCONTENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=143,
-  serialized_end=199,
+  serialized_start=158,
+  serialized_end=214,
 )
 
 
@@ -226,8 +233,8 @@ _DOCUMENTCHANGES_CHANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=299,
-  serialized_end=381,
+  serialized_start=314,
+  serialized_end=396,
 )
 
 _DOCUMENTCHANGES = _descriptor.Descriptor(
@@ -272,8 +279,8 @@ _DOCUMENTCHANGES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=202,
-  serialized_end=443,
+  serialized_start=217,
+  serialized_end=458,
 )
 
 
@@ -311,8 +318,8 @@ _DOCUMENTCHANGESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=445,
-  serialized_end=501,
+  serialized_start=460,
+  serialized_end=516,
 )
 
 
@@ -336,8 +343,8 @@ _DOCUMENTCHANGESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=503,
-  serialized_end=528,
+  serialized_start=518,
+  serialized_end=543,
 )
 
 _DOCUMENTCHANGES_CHANGE.fields_by_name['type'].enum_type = _DOCUMENTCHANGES_CHANGETYPE
@@ -419,8 +426,8 @@ _DOCUMENTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=531,
-  serialized_end=857,
+  serialized_start=546,
+  serialized_end=872,
   methods=[
   _descriptor.MethodDescriptor(
     name='AddDocument',

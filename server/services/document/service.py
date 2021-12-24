@@ -7,13 +7,15 @@ import document_pb2_grpc
 
 from config import CFG
 
+from google.cloud import storage
 
 class DocumentService(document_pb2_grpc.DocumentServiceServicer):
     """сервис по работе с одним документом
     """
     def __init__(self):
         super().__init__()
-        
+        storage_client = storage.Client()
+        self.doc_bucket = storage_client.get_bucket(CFG['storage_bucket'])
         self.active_documents = {}
 
     def AddDocument(self, request, context):
@@ -26,7 +28,11 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         docId = request.docId
         if docId not in self.active_documents:
             # load the document and make it active
-            self.active_documents[docId] = ds.DocumentSync("some text")
+            doc_title = f"doc{docId}.txt"
+            doc_blob = self.doc_bucket.blob(doc_title)
+            doc_blob.download_to_filename(doc_title)
+            with open(doc_title, "r") as f:
+                self.active_documents[docId] = ds.DocumentSync(f.read())
         return AddDocumentResponse()
 
     def GetActualDocumentContent(self, request, context):
@@ -74,6 +80,11 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         )
 
         doc_sync.add_changes(doc_changes)
+        # save
+        #text, version = doc_sync.get_actual_content()
+        #doc_title = f"doc{request.docId}.txt"
+        #doc_blob = self.doc_bucket.blob(doc_title)
+        #doc_blob.upload_from_string(text)
 
         return DocumentChangesResponse()
 

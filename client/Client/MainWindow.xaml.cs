@@ -104,6 +104,7 @@ namespace Client
             {
                 SendDiffToServer();
                 ReceiveDiffFromServer();
+                logTextBlock.Text = success;
             }
             catch (Exception ex)
             {

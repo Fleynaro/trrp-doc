@@ -54,16 +54,27 @@ namespace Client
 
         private void GetActualDocument()
         {
-            var docServer = server.GetDocServer(docId);
-            server.ConnectToDocumentServer(docServer.Address);
-            var actualDoc = server.GetActualDocumentContent(docId);
-            documentBackup = new DocumentContentResponse()
+            try
             {
-                Text = actualDoc.Text,
-                Version = actualDoc.Version
-            };
-            ChangeTextInRichTextBox(actualDoc.Text);
-            logTextBlock.Text = success;
+                var docServer = server.GetDocServer(docId);
+                server.ConnectToDocumentServer(docServer.Address);
+                var actualDoc = server.GetActualDocumentContent(docId);
+                documentBackup = new DocumentContentResponse()
+                {
+                    Text = actualDoc.Text,
+                    Version = actualDoc.Version
+                };
+                ChangeTextInRichTextBox(actualDoc.Text);
+                logTextBlock.Text = success;
+            }
+            catch (UnavailableDispatcherServerException ex)
+            {
+                throw ex;
+            }
+            catch (UnavailableDocumentServerException ex)
+            {
+                throw ex;
+            }
         }
 
         private void LoadDocumentFromServer(object sender, RoutedEventArgs e)
@@ -81,10 +92,10 @@ namespace Client
                 logTextBlock.Text = "Попытка переподключения к рабочему серверу провалилась";
                 //throw new UnavailableDocumentServerException("Попытка переподключения к рабочему серверу провалилась");
             }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            catch (UnavailableDispatcherServerException)
+            {
+                logTextBlock.Text = "Попытка переподключения к диспетчеру провалилась";
+            }
         }
 
         private void SyncDoc(object sender, EventArgs e)
@@ -149,13 +160,6 @@ namespace Client
                 ChangeTextInRichTextBox(newText);
             }
         }
-
-        //private void TestCursor(object sender, RoutedEventArgs e)
-        //{
-        //    var caret = docBox.CaretPosition;
-        //    docBox.Focus();
-        //    docBox.CaretPosition = docBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
-        //}
 
         private void ChangeTextInRichTextBox(string text)
         {

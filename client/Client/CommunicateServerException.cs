@@ -53,4 +53,10 @@ namespace Client
         public UnavailableDocumentServerException() : base() { }
         public UnavailableDocumentServerException(string message) : base(message) { }
     }
+
+    class UnavailableDispatcherServerException : Exception
+    {
+        public UnavailableDispatcherServerException() : base() { }
+        public UnavailableDispatcherServerException(string message) : base(message) { }
+    }
 }

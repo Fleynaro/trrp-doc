@@ -12,9 +12,8 @@ namespace Client
     class CommunicateServer
     {
         private string domain;
-        private string documentHost;
+        //private string documentHost;
         private Channel documentServerChannel;
-        private Channel storageChannel;
         private Channel dispatcherChannel;
         private DocumentService.DocumentServiceClient documentClient;
         private DispatcherService.DispatcherServiceClient dispatcherClient;
@@ -47,12 +46,12 @@ namespace Client
             try
             {
                 var request = new DocumentsRequest();
-                documents = dispatcherClient.GetDocuments(request).Documents.ToList();
+                documents = dispatcherClient.GetDocuments(request, deadline: DateTime.UtcNow.AddSeconds(5)).Documents.ToList();
             }
             catch (RpcException)
             {
                 // TODO: Обработать ошибку
-                throw new Exception("Сервер документов недоступен. Поторите попытку позже.");
+                throw new UnavailableDispatcherServerException("Сервер документов недоступен. Поторите попытку позже.");
             }
             return documents;
         }
@@ -64,19 +63,20 @@ namespace Client
             {
                 var serverRequest = new DocServerRequest() { DocId = docId };
 
-                serverResponse = dispatcherClient.GetDocServer(serverRequest);
+                serverResponse = dispatcherClient.GetDocServer(serverRequest, deadline: DateTime.UtcNow.AddSeconds(5));
             }
-            catch (RpcException)
+            catch (RpcException ex)
             {
                 // TODO: Обработать ошибки
-                throw new Exception("Ошибка получения адреса сервера документа. Проблемы с доступом к диспетчеру.");
+                ConnectToDispatcher();
+                throw new UnavailableDispatcherServerException("Ошибка получения адреса сервера документа. Проблемы с доступом к диспетчеру.");
             }
             return serverResponse;
         }
 
         public void ConnectToDocumentServer(string host)
         {
-            documentHost = host;
+            //documentHost = host;
             try
             {
                 documentServerChannel = new Channel(host, ChannelCredentials.Insecure);
@@ -85,7 +85,7 @@ namespace Client
             catch(RpcException)
             {
                 // TODO: Обработать ошибки
-                throw new Exception("Сервер документа недоступен");
+                throw new UnavailableDocumentServerException("Рабочий сервер недоступен");
             }
         }
 
@@ -95,12 +95,12 @@ namespace Client
             try
             {
                 var request = new DocumentContentRequest() { DocId = docId };
-                document = documentClient.GetActualDocumentContent(request);
+                document = documentClient.GetActualDocumentContent(request, deadline: DateTime.UtcNow.AddSeconds(5));
             }
-            catch (RpcException)
+            catch (RpcException ex)
             {
                 // TODO: Обработать ошибки
-                throw new Exception("Ошибка получения актуальной версии документа");
+                throw new UnavailableDocumentServerException("Ошибка получения актуальной версии документа");
             }
             return document;
         }
@@ -114,7 +114,7 @@ namespace Client
                     DocId = docId,
                     Version = version
                 };
-                documentChanges = documentClient.GetDocumentChanges(request);
+                documentChanges = documentClient.GetDocumentChanges(request, deadline: DateTime.UtcNow.AddSeconds(5));
             }
             catch (RpcException e)
             {
@@ -128,7 +128,7 @@ namespace Client
                     //ConnectToDocumentServer(documentHost);
                     throw new UnavailableDocumentServerException("Сервер документа недоступен. Проверьте соединение с сетью.");
                 }
-                else throw new Exception("Ошибка при получении изменений документа.");
+                else throw new UnavailableDocumentServerException("Ошибка при получении изменений документа.");
             }
             return documentChanges;
         }
@@ -137,7 +137,7 @@ namespace Client
         {
             try
             {
-                documentClient.SendDocumentChanges(documentChanges);
+                documentClient.SendDocumentChanges(documentChanges, deadline: DateTime.UtcNow.AddSeconds(5));
             }
             catch (RpcException e)
             {
@@ -148,7 +148,7 @@ namespace Client
                     throw new UnavailableDocumentServerException("Сервер документа недоступен. Проверьте соединение с сетью.");
                 }
                 else
-                    throw new Exception("Ошибка отправки изменений. Проверьте соединение с сетью.");
+                    throw new UnavailableDocumentServerException("Ошибка отправки изменений. Проверьте соединение с сетью.");
             }
         }
     }

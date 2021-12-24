@@ -1,12 +1,12 @@
+import sys
+sys.path.append("../grpc")
+
 import time
 import grpc
 
-from dispatcher_pb2 import DocServerRequest
-from storage_pb2 import DocumentsRequest
-from document_content_pb2 import DocumentContentRequest
-from document_pb2 import DocumentChangesRequest, DocumentChanges
+from dispatcher_pb2 import DocServerRequest, DocumentsRequest
+from document_pb2 import DocumentChangesRequest, DocumentChanges, DocumentContentRequest
 import dispatcher_pb2_grpc
-import storage_pb2_grpc
 import document_pb2_grpc
 
 
@@ -15,21 +15,15 @@ def apply_changes(text, changes):
 
 
 def client():
-    time.sleep(2)
-
     # диспетчер серверов
-    channel = grpc.insecure_channel("localhost:50051")
-    dispatcher_stub = dispatcher_pb2_grpc.DispatcherServiceStub(channel)
-    # хранилище документов
-    channel = grpc.insecure_channel("localhost:50052")
-    storage_stub = storage_pb2_grpc.StorageServiceStub(channel)
+    channel = grpc.insecure_channel("trrp.mooo.com:30163")
 
+    dispatcher_stub = dispatcher_pb2_grpc.DispatcherServiceStub(channel)
 
     # получаем список доступных документов
-    response = storage_stub.GetDocuments(DocumentsRequest())
+    response = dispatcher_stub.GetDocuments(DocumentsRequest())
     # выбираем первый документ
     my_doc = response.documents[0]
-
 
     # получаем сервер для работы с данным документом
     doc_server = dispatcher_stub.GetDocServer(DocServerRequest(docId=my_doc.docId))
@@ -78,3 +72,7 @@ def client():
     # применяем полученные изменения к содержимому my_doc_prev_text (а не my_doc_text)
     my_doc_text = apply_changes(my_doc_prev_text, doc_last_changes)
     print(my_doc_text)
+
+
+if __name__ == '__main__':
+    client()

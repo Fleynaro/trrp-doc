@@ -2,7 +2,6 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import document_content_pb2 as document__content__pb2
 import document_pb2 as document__pb2
 
 
@@ -16,15 +15,15 @@ class DocumentServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Ping = channel.unary_unary(
-                '/doc.DocumentService/Ping',
-                request_serializer=document__pb2.PingRequest.SerializeToString,
-                response_deserializer=document__pb2.PingResponse.FromString,
+        self.AddDocument = channel.unary_unary(
+                '/doc.DocumentService/AddDocument',
+                request_serializer=document__pb2.AddDocumentRequest.SerializeToString,
+                response_deserializer=document__pb2.AddDocumentResponse.FromString,
                 )
         self.GetActualDocumentContent = channel.unary_unary(
                 '/doc.DocumentService/GetActualDocumentContent',
-                request_serializer=document__content__pb2.DocumentContentRequest.SerializeToString,
-                response_deserializer=document__content__pb2.DocumentContentResponse.FromString,
+                request_serializer=document__pb2.DocumentContentRequest.SerializeToString,
+                response_deserializer=document__pb2.DocumentContentResponse.FromString,
                 )
         self.GetDocumentChanges = channel.unary_unary(
                 '/doc.DocumentService/GetDocumentChanges',
@@ -42,8 +41,8 @@ class DocumentServiceServicer(object):
     """сервис по работе с одним документом
     """
 
-    def Ping(self, request, context):
-        """проверка доступности сервера
+    def AddDocument(self, request, context):
+        """добавление документа
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -73,15 +72,15 @@ class DocumentServiceServicer(object):
 
 def add_DocumentServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Ping': grpc.unary_unary_rpc_method_handler(
-                    servicer.Ping,
-                    request_deserializer=document__pb2.PingRequest.FromString,
-                    response_serializer=document__pb2.PingResponse.SerializeToString,
+            'AddDocument': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddDocument,
+                    request_deserializer=document__pb2.AddDocumentRequest.FromString,
+                    response_serializer=document__pb2.AddDocumentResponse.SerializeToString,
             ),
             'GetActualDocumentContent': grpc.unary_unary_rpc_method_handler(
                     servicer.GetActualDocumentContent,
-                    request_deserializer=document__content__pb2.DocumentContentRequest.FromString,
-                    response_serializer=document__content__pb2.DocumentContentResponse.SerializeToString,
+                    request_deserializer=document__pb2.DocumentContentRequest.FromString,
+                    response_serializer=document__pb2.DocumentContentResponse.SerializeToString,
             ),
             'GetDocumentChanges': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDocumentChanges,
@@ -105,7 +104,7 @@ class DocumentService(object):
     """
 
     @staticmethod
-    def Ping(request,
+    def AddDocument(request,
             target,
             options=(),
             channel_credentials=None,
@@ -115,9 +114,9 @@ class DocumentService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/doc.DocumentService/Ping',
-            document__pb2.PingRequest.SerializeToString,
-            document__pb2.PingResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/doc.DocumentService/AddDocument',
+            document__pb2.AddDocumentRequest.SerializeToString,
+            document__pb2.AddDocumentResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -133,8 +132,8 @@ class DocumentService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/doc.DocumentService/GetActualDocumentContent',
-            document__content__pb2.DocumentContentRequest.SerializeToString,
-            document__content__pb2.DocumentContentResponse.FromString,
+            document__pb2.DocumentContentRequest.SerializeToString,
+            document__pb2.DocumentContentResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

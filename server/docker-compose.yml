@@ -1,0 +1,7 @@
+version: '3'
+services:
+  dispatcher:
+    build:
+      image: trrp/dispatcher:v2
+      context: .
+      dockerfile: ./services/dispatcher

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: grpc-ingress-nginx
+  namespace: chaos-app
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/grpc-backend: "true"
+  namespace: default
+spec:
+  rules:
+  - host: trrp-disp.mooo.com
+    http:
+      paths:
+      - backend:                                                                                                                                                                                                      
+          serviceName: dispatcher-service
+          servicePort: 50051

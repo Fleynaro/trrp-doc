@@ -11,19 +11,22 @@ message DocServer {
     string address = 1;
 }
 
-// добавление нового сервера документов
-message AddDocServerRequest {
-    DocServer docServer = 1;
-    string secretKey = 2;
-}
+// получение списка документов
+message DocumentsRequest {}
 
-message AddDocServerResponse {}
+message DocumentsResponse {
+    message DocumentInfo {
+        int64 docId = 1;
+        string title = 2;
+    }
+    repeated DocumentInfo documents = 1;
+}
 
 // сервис по работе со множеством серверов
 service DispatcherService {
     // получение сервера по ид документа
     rpc GetDocServer(DocServerRequest) returns (DocServer) {}
 
-    // добавление нового сервера документов
-    rpc AddDocServer(AddDocServerRequest) returns (AddDocServerResponse) {}
+    // получение списка документов
+    rpc GetDocuments(DocumentsRequest) returns (DocumentsResponse) {}
 }

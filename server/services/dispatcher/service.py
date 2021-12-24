@@ -7,7 +7,10 @@ import document_pb2_grpc
 
 from config import CFG
 
+from google.cloud import storage
 import kubernetes as k8s
+
+from utils import title_to_id
 
 class DispatcherService(
     dispatcher_pb2_grpc.DispatcherServiceServicer):
@@ -19,6 +22,8 @@ class DispatcherService(
             'trrp.mooo.com:30001',
             'trrp.mooo.com:30002',
         ]
+        storage_client = storage.Client()
+        self.doc_bucket = storage_client.get_bucket(CFG['storage_bucket'])
         
 
     def GetDocServer(self, request, context):
@@ -43,10 +48,13 @@ class DispatcherService(
         """получение списка документов
         """
         response = DocumentsResponse()
+        #for title in self.doc_bucket.list_blobs():
+        #    response.documents.append(
+        #        DocumentsResponse.DocumentInfo(docId=title_to_id(title), title=title))
         response.documents.append(
-            DocumentsResponse.DocumentInfo(docId=100, title=f'doc1.txt'))
+            DocumentsResponse.DocumentInfo(docId=1, title=f'doc1.txt'))
         response.documents.append(
-            DocumentsResponse.DocumentInfo(docId=101, title=f'doc2.txt'))
+            DocumentsResponse.DocumentInfo(docId=2, title=f'doc2.txt'))
         return response
 
 

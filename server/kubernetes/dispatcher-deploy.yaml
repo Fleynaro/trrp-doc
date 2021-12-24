@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dispatcher
-        image: fleynaro/trrp:dispatcher-v1.3
+        image: fleynaro/trrp:dispatcher-v2.0
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 50051

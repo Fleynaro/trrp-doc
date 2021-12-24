@@ -37,8 +37,8 @@ namespace Client
             timer = new Timer(SyncDoc);
             try
             {
-                server = new CommunicateServer();
-                server.ConnectToStorage();
+                server = new CommunicateServer("trrp.mooo.com");
+                server.ConnectToDispatcher();
                 documents = server.GetDocuments();
                 foreach (var doc in documents)
                 {

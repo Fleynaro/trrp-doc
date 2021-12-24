@@ -18,7 +18,6 @@ namespace Client
         private Channel dispatcherChannel;
         private DocumentService.DocumentServiceClient documentClient;
         private DispatcherService.DispatcherServiceClient dispatcherClient;
-        private StorageService.StorageServiceClient storageClient;
 
         public CommunicateServer(string domain = "localhost")
         {
@@ -28,25 +27,11 @@ namespace Client
             this.domain = domain;
         }
 
-        public void ConnectToStorage()
-        {
-            try
-            {
-                storageChannel = new Channel(domain, 50052, ChannelCredentials.Insecure);
-                storageClient = new StorageService.StorageServiceClient(storageChannel);
-            }
-            catch (RpcException)
-            {
-                // TODO: Обработать ошибки
-                throw new Exception("Не удалось связаться с сервером хранилища");
-            }
-        }
-
         public void ConnectToDispatcher()
         {
             try
             {
-                dispatcherChannel = new Channel(domain, 50051, ChannelCredentials.Insecure);
+                dispatcherChannel = new Channel(domain, 30163, ChannelCredentials.Insecure);
                 dispatcherClient = new DispatcherService.DispatcherServiceClient(dispatcherChannel);
             }
             catch (RpcException)
@@ -62,7 +47,7 @@ namespace Client
             try
             {
                 var request = new DocumentsRequest();
-                documents = storageClient.GetDocuments(request).Documents.ToList();
+                documents = dispatcherClient.GetDocuments(request).Documents.ToList();
             }
             catch (RpcException)
             {

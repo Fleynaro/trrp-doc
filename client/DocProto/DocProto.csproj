@@ -16,8 +16,6 @@
   <ItemGroup>
     <Protobuf Include="..\..\proto\document.proto" Link="document.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\proto\dispatcher.proto" Link="dispatcher.proto" GrpcServices="Client" />
-    <Protobuf Include="..\..\proto\document_content.proto" Link="document_content.proto" GrpcServices="Client" />
-    <Protobuf Include="..\..\proto\storage.proto" Link="storage.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

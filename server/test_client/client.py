@@ -18,10 +18,10 @@ def client():
     time.sleep(2)
 
     # диспетчер серверов
-    channel = grpc.insecure_channel("192.168.1.100:50051")
+    channel = grpc.insecure_channel("localhost:50051")
     dispatcher_stub = dispatcher_pb2_grpc.DispatcherServiceStub(channel)
     # хранилище документов
-    channel = grpc.insecure_channel("192.168.1.100:50052")
+    channel = grpc.insecure_channel("localhost:50052")
     storage_stub = storage_pb2_grpc.StorageServiceStub(channel)
 
 

@@ -12,10 +12,10 @@ namespace Client
         public CommunicateServerException(string message) : base(message) { }
     }
 
-    class GetDocumentChangesException : Exception
+    class NotFoundDocumentException : Exception
     {
-        public GetDocumentChangesException() : base() { }
-        public GetDocumentChangesException(string message) : base(message) { }
+        public NotFoundDocumentException() : base() { }
+        public NotFoundDocumentException(string message) : base(message) { }
     }
 
     class SendDocumentChangesException : Exception
@@ -46,5 +46,11 @@ namespace Client
     {
         public GetDocumentsException() : base() { }
         public GetDocumentsException(string message) : base(message) { }
+    }
+
+    class UnavailableDocumentServerException : Exception
+    {
+        public UnavailableDocumentServerException() : base() { }
+        public UnavailableDocumentServerException(string message) : base(message) { }
     }
 }

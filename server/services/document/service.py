@@ -2,10 +2,8 @@ import grpc
 
 import document_sync as ds
 
-from document_content_pb2 import DocumentContentRequest, DocumentContentResponse
-from document_pb2 import PingResponse, DocumentChanges, DocumentChangesResponse
+from document_pb2 import AddDocumentResponse, DocumentChanges, DocumentChangesResponse, DocumentContentResponse
 import document_pb2_grpc
-import storage_pb2_grpc
 
 from config import CFG
 
@@ -15,23 +13,21 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
     """
     def __init__(self):
         super().__init__()
-        channel = grpc.insecure_channel(CFG['storage_address'])
-        self.storage_stub = storage_pb2_grpc.StorageServiceStub(channel)
+        
         self.active_documents = {}
 
-    def Ping(self, request, context):
+    def AddDocument(self, request, context):
         """проверка доступности сервера
         """
         if request.secretKey != CFG['secret_key']:
             context.set_code(grpc.StatusCode.PERMISSION_DENIED)
             context.set_details('Permission denied!')
-            return PingResponse()
+            return AddDocumentResponse()
         docId = request.docId
         if docId not in self.active_documents:
             # load the document and make it active
-            response = self.storage_stub.GetDocumentContent(DocumentContentRequest(docId=docId))
-            self.active_documents[docId] = ds.DocumentSync(response.text)
-        return PingResponse()
+            self.active_documents[docId] = ds.DocumentSync("some text")
+        return AddDocumentResponse()
 
     def GetActualDocumentContent(self, request, context):
         """получение контента документа актуальной версии

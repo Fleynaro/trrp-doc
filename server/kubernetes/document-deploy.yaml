@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: document-1-deployment
+  namespace: chaos-app
+  labels:
+    app: trrp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: document
+      idx: "1"
+  template:
+    metadata:
+      labels:
+        app: document
+        idx: "1"
+    spec:
+      containers:
+      - name: document
+        image: fleynaro/trrp:document-v1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: document-2-deployment
+  namespace: chaos-app
+  labels:
+    app: trrp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: document
+      idx: "2"
+  template:
+    metadata:
+      labels:
+        app: document
+        idx: "2"
+    spec:
+      containers:
+      - name: document
+        image: fleynaro/trrp:document-v1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 50051
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: document-1-service
+  namespace: chaos-app
+spec:
+  selector:
+    app: document
+    idx: "1"
+  ports:
+    - port: 50051
+      targetPort: 50051
+      nodePort: 30001
+      name: grpc
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: document-2-service
+  namespace: chaos-app
+spec:
+  selector:
+    app: document
+    idx: "2"
+  ports:
+    - port: 50051
+      targetPort: 50051
+      nodePort: 30002
+      name: grpc
+  type: NodePort

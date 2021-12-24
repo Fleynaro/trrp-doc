@@ -1,19 +1,20 @@
-# СБОРКА
-# docker build --progress=plain -t docker-labcode3 .
 
-# ЗАПУСК
-# docker run docker-labcode3 train - тренировка сети на датасете mnist
-# docker run docker-labcode3 train test - проверка на тестовом датасете mnist
-# docker run docker-labcode3 test [путь к картинке или к директории с картинками]
+# docker build --progress=plain -t docker-labcode3 .
 
 FROM python:3.7
 
 RUN mkdir /server
 WORKDIR /server
-ADD . /server/
 
+COPY ./requirements.txt ./
 RUN python -m pip install --upgrade pip setuptools
 RUN pip install -r requirements.txt
 
+COPY ./grpc ./grpc
+COPY ./shared ./shared
+
+COPY ./config.py ./
+COPY ./services/document/ ./
+
 EXPOSE 50051
-ENTRYPOINT ["python", "/server/start_dispatcher.py"]
+ENTRYPOINT ["python", "./main.py"]

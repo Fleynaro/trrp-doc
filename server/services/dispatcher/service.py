@@ -1,7 +1,7 @@
 import grpc
 
-from dispatcher_pb2 import DocServer, AddDocServerResponse, DocumentsResponse
-from document_pb2 import PingRequest
+from dispatcher_pb2 import DocServer, DocumentsResponse
+from document_pb2 import AddDocumentRequest
 import dispatcher_pb2_grpc
 import document_pb2_grpc
 
@@ -15,35 +15,27 @@ class DispatcherService(
     """
     def __init__(self):
         super().__init__()
-        self.doc_servers = []
+        self.doc_servers = [
+            'trrp.mooo.com:30001',
+            'trrp.mooo.com:30002',
+        ]
         
 
     def GetDocServer(self, request, context):
         """получение сервера по ид документа
         """
-        server_addr = ''
+        # select random server
+        server_idx = request.docId % len(self.doc_servers)
+        server_addr = self.doc_servers[server_idx]
 
-        # try connect to server
-        while server_addr == '':
-            # if no servers available
-            if not self.doc_servers:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('No servers available!')
-                return DocServer()
-
-            # select random server
-            server_idx = request.docId % len(self.doc_servers)
-            server_addr = self.doc_servers[server_idx]
-
-            # check server availability
-            channel = grpc.insecure_channel(server_addr)
-            stub = document_pb2_grpc.DocumentServiceStub(channel)
-            try:
-                stub.Ping(PingRequest(docId=request.docId, secretKey=CFG['secret_key']))
-            except grpc.RpcError as e:
-                self.doc_servers.remove(server_addr)
-                server_addr = ''
-
+        # check server availability
+        channel = grpc.insecure_channel(server_addr)
+        stub = document_pb2_grpc.DocumentServiceStub(channel)
+        try:
+            stub.AddDocument(AddDocumentRequest(docId=request.docId, secretKey=CFG['secret_key']))
+        except grpc.RpcError as e:
+            self.doc_servers.remove(server_addr)
+            server_addr = ''
         return DocServer(address=server_addr)
 
 
@@ -51,24 +43,20 @@ class DispatcherService(
         """получение списка документов
         """
         response = DocumentsResponse()
-        k8s.config.load_kube_config()
-
-        v1 = k8s.client.CoreV1Api()
-        print("Listing pods with their IPs:")
-        ret = v1.list_pod_for_all_namespaces(watch=False)
-        for i in ret.items:
-            print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
-            response.documents.append(
-                DocumentsResponse.DocumentInfo(docId=100, title=f'{i.status.pod_ip}/{i.metadata.name}'))
+        response.documents.append(
+            DocumentsResponse.DocumentInfo(docId=100, title=f'doc1.txt'))
+        response.documents.append(
+            DocumentsResponse.DocumentInfo(docId=101, title=f'doc2.txt'))
         return response
 
-    
-    def AddDocServer(self, request, context):
-        """добавление нового сервера документов
-        """
-        if request.secretKey != CFG['secret_key']:
-            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
-            context.set_details('Permission denied!')
-            return AddDocServerResponse()
-        self.doc_servers.append(request.docServer.address)
-        return AddDocServerResponse()
+
+def test_kuber():
+    response = DocumentsResponse()
+    k8s.config.load_incluster_config()
+    v1 = k8s.client.CoreV1Api()
+    print("Listing pods with their IPs:")
+    ret = v1.list_pod_for_all_namespaces(watch=False)
+    for i in ret.items:
+        print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+        response.documents.append(
+            DocumentsResponse.DocumentInfo(docId=100, title=f'{i.status.pod_ip}/{i.metadata.name}'))

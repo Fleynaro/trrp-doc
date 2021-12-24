@@ -3,11 +3,11 @@ syntax = "proto3";
 package doc;
 
 // проверка доступности сервера
-message PingRequest {
+message AddDocumentRequest {
     int64 docId = 1;
     string secretKey = 2;
 }
-message PingResponse {}
+message AddDocumentResponse {}
 
 // получение содержимого документа
 message DocumentContentRequest {
@@ -48,8 +48,8 @@ message DocumentChangesResponse {}
 
 // сервис по работе с одним документом
 service DocumentService {
-    // проверка доступности сервера
-    rpc Ping(PingRequest) returns (PingResponse) {}
+    // добавление документа
+    rpc AddDocument(AddDocumentRequest) returns (AddDocumentResponse) {}
 
     // получение контента документа актуальной версии
     rpc GetActualDocumentContent(DocumentContentRequest) returns (DocumentContentResponse) {}

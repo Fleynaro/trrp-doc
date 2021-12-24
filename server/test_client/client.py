@@ -16,14 +16,14 @@ def apply_changes(text, changes):
 
 def client():
     # диспетчер серверов
-    channel = grpc.insecure_channel("127.0.0.1:50051")
+    channel = grpc.insecure_channel("trrp.mooo.com:30163")
+
     dispatcher_stub = dispatcher_pb2_grpc.DispatcherServiceStub(channel)
 
     # получаем список доступных документов
     response = dispatcher_stub.GetDocuments(DocumentsRequest())
     # выбираем первый документ
     my_doc = response.documents[0]
-
 
     # получаем сервер для работы с данным документом
     doc_server = dispatcher_stub.GetDocServer(DocServerRequest(docId=my_doc.docId))

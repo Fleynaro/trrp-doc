@@ -22,14 +22,6 @@ message DocumentsResponse {
     repeated DocumentInfo documents = 1;
 }
 
-// добавление нового сервера документов
-message AddDocServerRequest {
-    DocServer docServer = 1;
-    string secretKey = 2;
-}
-
-message AddDocServerResponse {}
-
 // сервис по работе со множеством серверов
 service DispatcherService {
     // получение сервера по ид документа
@@ -37,7 +29,4 @@ service DispatcherService {
 
     // получение списка документов
     rpc GetDocuments(DocumentsRequest) returns (DocumentsResponse) {}
-
-    // добавление нового сервера документов
-    rpc AddDocServer(AddDocServerRequest) returns (AddDocServerResponse) {}
 }

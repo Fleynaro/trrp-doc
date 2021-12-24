@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dispatcher-deployment
+  namespace: chaos-app
   labels:
     app: trrp
 spec:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dispatcher
-        image: fleynaro/trrp:dispatcher-v1
+        image: fleynaro/trrp:dispatcher-v1.3
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 50051
@@ -25,10 +26,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dispatcher-service
+  namespace: chaos-app
 spec:
   selector:
     app: dispatcher
   ports:
-  - name: grpc
-    port: 50051
-    targetPort: 50051
+    - port: 50051
+      targetPort: 50051
+      nodePort: 30163
+      name: grpc
+  type: NodePort

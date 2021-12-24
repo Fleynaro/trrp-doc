@@ -2,3 +2,4 @@ grpcio
 grpcio-tools
 google-cloud-storage
 kubernetes
+boto3

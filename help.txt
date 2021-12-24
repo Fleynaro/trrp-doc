@@ -1,3 +1,4 @@
 minikube start --vm-driver=hyperv --kubernetes-version v1.21.5
 kubectl create clusterrolebinding service-reader-3 --clusterrole=service-reader  --serviceaccount=chaos-app:default
 gcloud compute firewall-rules create "open-port-1" --allow=tcp:30100
+gcloud beta compute instances set-scopes gke-trrp-doc-cluster-1-default-pool-66b44fb5-j7dx --project=xenon-axe-336011 --scopes=https://www.googleapis.com/auth/devstorage.read_write --service-account=kudesnik42@gmail.com

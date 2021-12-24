@@ -8,14 +8,20 @@ import document_pb2_grpc
 from config import CFG
 
 from google.cloud import storage
+import boto3
 
 class DocumentService(document_pb2_grpc.DocumentServiceServicer):
     """сервис по работе с одним документом
     """
     def __init__(self):
         super().__init__()
-        storage_client = storage.Client()
-        self.doc_bucket = storage_client.get_bucket(CFG['storage_bucket'])
+        session = boto3.Session()
+        self.client = session.client(
+            service_name='s3',
+            endpoint_url='https://storage.yandexcloud.net',
+            region_name='ru-central1',
+            aws_access_key_id='SLmdUdOyVS0t4nqBZsyM',
+            aws_secret_access_key='On-r-v864dSjRCmpAMS6VsAKZjo_qyy_MntNTX7q')
         self.active_documents = {}
 
     def AddDocument(self, request, context):
@@ -29,10 +35,8 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
         if docId not in self.active_documents:
             # load the document and make it active
             doc_title = f"doc{docId}.txt"
-            doc_blob = self.doc_bucket.blob(doc_title)
-            doc_blob.download_to_filename(doc_title)
-            with open(doc_title, "r") as f:
-                self.active_documents[docId] = ds.DocumentSync(f.read())
+            get_object_response = self.client.get_object(Bucket='trrp-doc-bucket', Key=doc_title)
+            self.active_documents[docId] = ds.DocumentSync(get_object_response['Body'].read().decode('utf-8'))
         return AddDocumentResponse()
 
     def GetActualDocumentContent(self, request, context):
@@ -81,10 +85,11 @@ class DocumentService(document_pb2_grpc.DocumentServiceServicer):
 
         doc_sync.add_changes(doc_changes)
         # save
-        #text, version = doc_sync.get_actual_content()
-        #doc_title = f"doc{request.docId}.txt"
-        #doc_blob = self.doc_bucket.blob(doc_title)
-        #doc_blob.upload_from_string(text)
+        text, version = doc_sync.get_actual_content()
+        doc_title = f"doc{request.docId}.txt"
+        self.client.put_object(Bucket='trrp-doc-bucket',
+                      Key=doc_title,
+                      Body=text)
 
         return DocumentChangesResponse()
 

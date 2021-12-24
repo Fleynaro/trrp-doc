@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-gcloud-python
+  labels:
+    app: jupyter
+spec:
+  containers:
+    - name: jupyter
+      image: fleynaro/trrp:test-gcloud-python
+      ports:
+        - name: web
+          containerPort: 8888
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-gcloud-python-service
+spec:
+  selector:
+    app: jupyter
+  ports:
+    - port: 8888
+      targetPort: 8888
+      nodePort: 30200
+      name: grpc
+  type: NodePort

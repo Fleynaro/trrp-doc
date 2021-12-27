@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Doc;
-using Grpc.Core;
 
 namespace Client
 {
@@ -48,7 +47,6 @@ namespace Client
             catch(Exception ex)
             {
                 logTextBlock.Text = ex.Message;
-                //MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -90,7 +88,6 @@ namespace Client
             catch (UnavailableDocumentServerException)
             {
                 logTextBlock.Text = "Попытка переподключения к рабочему серверу провалилась";
-                //throw new UnavailableDocumentServerException("Попытка переподключения к рабочему серверу провалилась");
             }
             catch (UnavailableDispatcherServerException)
             {
@@ -109,7 +106,6 @@ namespace Client
             catch (Exception ex)
             {
                 logTextBlock.Text = ex.Message;
-                //MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

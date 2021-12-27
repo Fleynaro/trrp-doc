@@ -12,7 +12,6 @@ namespace Client
     class CommunicateServer
     {
         private string domain;
-        //private string documentHost;
         private Channel documentServerChannel;
         private Channel dispatcherChannel;
         private DocumentService.DocumentServiceClient documentClient;
@@ -35,7 +34,6 @@ namespace Client
             }
             catch (RpcException)
             {
-                // TODO: Обработать ошибки
                 throw new Exception("Не удалось связаться с сервером диспечера");
             }
         }
@@ -50,7 +48,6 @@ namespace Client
             }
             catch (RpcException)
             {
-                // TODO: Обработать ошибку
                 throw new UnavailableDispatcherServerException("Сервер документов недоступен. Поторите попытку позже.");
             }
             return documents;
@@ -67,7 +64,6 @@ namespace Client
             }
             catch (RpcException ex)
             {
-                // TODO: Обработать ошибки
                 ConnectToDispatcher();
                 throw new UnavailableDispatcherServerException("Ошибка получения адреса сервера документа. Проблемы с доступом к диспетчеру.");
             }
@@ -76,7 +72,6 @@ namespace Client
 
         public void ConnectToDocumentServer(string host)
         {
-            //documentHost = host;
             try
             {
                 documentServerChannel = new Channel(host, ChannelCredentials.Insecure);
@@ -84,7 +79,6 @@ namespace Client
             }
             catch(RpcException)
             {
-                // TODO: Обработать ошибки
                 throw new UnavailableDocumentServerException("Рабочий сервер недоступен");
             }
         }
@@ -99,7 +93,6 @@ namespace Client
             }
             catch (RpcException ex)
             {
-                // TODO: Обработать ошибки
                 throw new UnavailableDocumentServerException("Ошибка получения актуальной версии документа");
             }
             return document;
@@ -118,14 +111,12 @@ namespace Client
             }
             catch (RpcException e)
             {
-                // TODO: Обработать ошибки
                 if (StatusCode.NotFound == e.StatusCode)
                 {
                     throw new NotFoundDocumentException();
                 }
                 else if (StatusCode.Unavailable == e.StatusCode)
                 {
-                    //ConnectToDocumentServer(documentHost);
                     throw new UnavailableDocumentServerException("Сервер документа недоступен. Проверьте соединение с сетью.");
                 }
                 else throw new UnavailableDocumentServerException("Ошибка при получении изменений документа.");
@@ -141,10 +132,8 @@ namespace Client
             }
             catch (RpcException e)
             {
-                // TODO: Обработать ошибки
                 if (StatusCode.Unavailable == e.StatusCode)
                 {
-                    //ConnectToDocumentServer(documentHost);
                     throw new UnavailableDocumentServerException("Сервер документа недоступен. Проверьте соединение с сетью.");
                 }
                 else

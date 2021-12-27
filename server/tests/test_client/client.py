@@ -16,7 +16,7 @@ def apply_changes(text, changes):
 
 def client():
     # диспетчер серверов
-    channel = grpc.insecure_channel("trrp-disp.mooo.com:30163")
+    channel = grpc.insecure_channel("localhost:30163")
 
     dispatcher_stub = dispatcher_pb2_grpc.DispatcherServiceStub(channel)
 
